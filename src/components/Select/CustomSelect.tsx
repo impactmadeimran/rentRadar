@@ -5,9 +5,10 @@ interface CustomSelectProps {
     options: string[];
     onSelect: (option: string) => void;
     selectedOption: string;
+    placeholder?: string
 }
 
-const CustomSelect: React.FC<CustomSelectProps> = ({ options, onSelect, selectedOption = "" }) => {
+const CustomSelect: React.FC<CustomSelectProps> = ({ options, onSelect, selectedOption = "", placeholder = "select" }) => {
     const [modalVisible, setModalVisible] = useState(false);
 
     const handleSelectOption = (option: string) => {
@@ -18,7 +19,7 @@ const CustomSelect: React.FC<CustomSelectProps> = ({ options, onSelect, selected
     return (
         <View>
             <TouchableOpacity onPress={() => setModalVisible(true)} style={tw`border border-gray-200 p-2 rounded`}>
-                <Text style={tw`${selectedOption === "" ? "text-gray-400" : ""}`}>{selectedOption === "" ? "Select" : selectedOption}</Text>
+                <Text style={tw`${selectedOption === "" ? "text-gray-400" : ""}`}>{selectedOption ? selectedOption : placeholder}</Text>
             </TouchableOpacity>
             <Modal animationType="fade" visible={modalVisible} transparent={true}>
                 <TouchableOpacity
