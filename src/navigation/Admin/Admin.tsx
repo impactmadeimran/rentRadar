@@ -6,6 +6,7 @@ import Message from "../../Screens/Admin/Message/Message";
 import Account from "../../Screens/Admin/Account/Account";
 import axios from "axios";
 import { useUserContext } from "../../context/UserContext";
+import Explore from "../../Screens/Admin/Explore/Explore";
 
 const Tab = createBottomTabNavigator();
 
@@ -38,6 +39,11 @@ const Admin = () => {
             <Tab.Screen name="Home" component={Home} options={{
                 tabBarIcon: ({ color }) => {
                     return <AntDesign name={'home'} size={20} color={color} />;
+                }
+            }} />
+            <Tab.Screen name="Explore" component={Explore} options={{
+                tabBarIcon: ({ color }) => {
+                    return <AntDesign name={'search1'} size={20} color={color} />;
                 }
             }} />
             <Tab.Screen name="Favorites" component={Message} options={{

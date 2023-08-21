@@ -1,12 +1,13 @@
-import { Alert, SafeAreaView, Text, TextInput, TouchableOpacity, View } from "react-native"
+import { ActivityIndicator, Alert, SafeAreaView, Text, TextInput, TouchableOpacity, View } from "react-native"
 import tw from 'twrnc'
 import api from "../../../utils"
 import { Controller, useForm } from "react-hook-form"
 import { useMutation } from "@tanstack/react-query"
 import { useUserContext } from "../../context/UserContext"
+import Loader from "../../components/Loader/Loader"
 
 const Login = ({ navigation }: any) => {
-    const { register, handleSubmit, control, formState: { errors } } = useForm();
+    const { register, handleSubmit, control } = useForm();
     const { authenticate } = useUserContext()
     const login = async (data: any) => {
         const res = await api.post('auth/login/', {
@@ -15,7 +16,7 @@ const Login = ({ navigation }: any) => {
         return res.data
     }
 
-    const { mutate } = useMutation({
+    const { mutate, isLoading } = useMutation({
         mutationKey: ['login'],
         mutationFn: login,
         onSuccess: (data) => {
@@ -34,7 +35,7 @@ const Login = ({ navigation }: any) => {
 
     }
 
-
+    if (isLoading) return <Loader />
 
     return (
         <SafeAreaView style={tw`flex flex-1 items-center justify-center w-full `}>
