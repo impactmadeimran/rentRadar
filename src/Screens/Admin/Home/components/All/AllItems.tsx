@@ -2,13 +2,10 @@ import { FlatList, RefreshControl, ScrollView, Text, View } from "react-native"
 import { SafeAreaView } from "react-native-safe-area-context"
 import tw from 'twrnc'
 import { useQuery } from "@tanstack/react-query"
-import { useUserContext } from "../../../../../context/UserContext"
 import Loader from "../../../../../components/Loader/Loader"
 import ItemCard from "./ItemCard/ItemCard"
 import api from "../../../../../../utils"
 const AllItems = () => {
-    const { token } = useUserContext()
-    console.log(token)
     const getAll = async () => {
         const res = api.get('rental/all/')
         return (await res).data

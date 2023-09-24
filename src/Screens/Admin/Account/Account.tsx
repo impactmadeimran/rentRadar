@@ -1,11 +1,9 @@
-import { View, Text } from 'react-native'
 import React from 'react'
+import AccountStack from '../../../navigation/Admin/screens/Account/AccountStack'
 
 const Account = () => {
     return (
-        <View>
-            <Text>Account</Text>
-        </View>
+        <AccountStack />
     )
 }
 

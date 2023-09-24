@@ -1,4 +1,4 @@
-import { ActivityIndicator, Alert, SafeAreaView, Text, TextInput, TouchableOpacity, View } from "react-native"
+import { Alert, SafeAreaView, Text, TextInput, TouchableOpacity, View, Keyboard } from "react-native"
 import tw from 'twrnc'
 import api from "../../../utils"
 import { Controller, useForm } from "react-hook-form"
@@ -22,7 +22,7 @@ const Login = ({ navigation }: any) => {
         onSuccess: (data) => {
             if (data?.jwt) {
                 authenticate?.(data?.jwt)
-                navigation.navigate('App')
+                navigation.navigate('AccountInfo')
             } else {
                 Alert.alert('Error')
             }
@@ -32,6 +32,7 @@ const Login = ({ navigation }: any) => {
     const onSubmit = (data: any) => {
         console.log(data)
         mutate(data)
+        Keyboard.dismiss()
 
     }
 

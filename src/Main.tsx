@@ -8,17 +8,19 @@ import { NavigationContainer } from '@react-navigation/native'
 import axios from 'axios'
 
 
-axios.defaults.baseURL = "http://e6df-154-160-4-218.ngrok-free.app/api/v1"
+axios.defaults.baseURL = "http://206.81.18.243:5555/api/v1"
 const Stack = createNativeStackNavigator();
 const Main = () => {
 
     return (
         <View style={styles.container}>
             <NavigationContainer>
-                <Stack.Navigator screenOptions={{
+                <Stack.Navigator initialRouteName='App' screenOptions={{
                     headerShown: false
                 }}>
-                    {/* <Stack.Screen name="Auth" component={Auth} /> */}
+                    <Stack.Group screenOptions={{ presentation: 'modal' }}>
+                        <Stack.Screen name="Auth" component={Auth} />
+                    </Stack.Group>
                     <Stack.Screen name="App" component={Admin} />
                 </Stack.Navigator>
             </NavigationContainer>

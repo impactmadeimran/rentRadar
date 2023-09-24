@@ -48,6 +48,7 @@ const ViewItem = ({ route, navigation }: any) => {
             </View>
             <ScrollView style={tw`p-5`}>
                 <Text style={tw`text-xl font-semibold tracking-wider text-red-700`}>{data?.title}</Text>
+                <Text style={tw`text-xl font-semibold tracking-wider text-red-700`}>{data?.user?.bus_name}</Text>
                 <View style={tw`justify-between items-center flex-row`}>
                     <Text style={tw`text-xl font-semibold tracking-wider text-red-700`}>{data?.lease_cost}</Text>
                     <HeartIcon height={24} width={24} style={tw`text-red-500`} />

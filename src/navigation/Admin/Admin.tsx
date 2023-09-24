@@ -1,5 +1,4 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { NavigationContainer } from "@react-navigation/native"
 import Home from "../../Screens/Admin/Home/Home";
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Message from "../../Screens/Admin/Message/Message";
