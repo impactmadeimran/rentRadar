@@ -38,42 +38,11 @@ const Search = () => {
         queryKey: ['searchRent', debSearch, debMinRate, debMaxRate, debMinTerm, debMaxTerm],
         queryFn: getAll
     })
-    // const filterRest = async () => {
-    //     const res = api.get(`rental/filter/`, {
-    //         params: {
-    //             // title: debSearch
-    //             min_rate: minimumRate,
-    //             max_rate: maximumRate,
-    //             min_term: minimumTerm,
-    //             max_term: maximumTerm
-    //         }
-    //     })
-    //     return (await res).data
-    // }
-
-    // const { mutate, data: filterData } = useMutation({
-    //     mutationKey: ['filterRent'],
-    //     mutationFn: filterRest,
-    //     onSuccess: (data) => {
-    //         queryClient.setQueryData(['searchRent'], () => data)
-    //         console.log('success')
-    //     }
-    // })
     const bottomSheetRef = useRef<BottomSheetModal>(null);
-
-    // variables
-    // const snapPoints = useMemo(() => ['0', '90%'], []);
-
-    // callbacks
-    // const handleSheetChanges = useCallback((index: number) => {
-    //     console.log('handleSheetChanges', index);
-    // }, []);
 
     const handlePresentModalPress = useCallback(() => {
         bottomSheetRef.current?.present();
     }, []);
-
-    // console.log('filterdata', filterData)
 
     if (isLoading || isFetching) return <Loader />
 

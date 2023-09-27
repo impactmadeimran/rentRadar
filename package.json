@@ -27,6 +27,7 @@
     "expo-image-picker": "~14.3.2",
     "expo-secure-store": "~12.3.1",
     "expo-status-bar": "~1.6.0",
+    "jwt-decode": "^3.1.2",
     "lodash": "^4.17.21",
     "lucide-react-native": "^0.265.0",
     "react": "18.2.0",

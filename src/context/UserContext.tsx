@@ -9,6 +9,7 @@ interface userProps {
     isAuthenticated: boolean;
     setUserData: any;
     user: any;
+    tokenDecoded: any;
 }
 
 const Context = createContext<Partial<userProps>>({
@@ -20,6 +21,7 @@ const UserContext = ({ children }: any) => {
     const [token, setToken] = useState<any>(undefined);
     const [isAuthenticated, setIsAuthenticated] = useState(false)
     const [user, setUser] = useState<any>(null)
+    const [tokenDecoded, setTokenDecoded] = useState<any>(null)
 
     const authenticate = async (data: string) => {
         try {
@@ -54,15 +56,22 @@ const UserContext = ({ children }: any) => {
         }
     }
 
-    const setUserData = async (data: any) => {
+    const setUserData = async (data: any, jwt: any) => {
         console.log('data', data)
         try {
             const jsonUser = JSON.stringify(data);
+            const jsonToken = JSON.stringify(jwt);
+            await AsyncStorage.setItem('jsonToken', jsonToken);
             await AsyncStorage.setItem('userData', jsonUser);
             const user = await AsyncStorage.getItem('userData');
+            const token = await AsyncStorage.getItem('jsonToken');
             const parsedUser = JSON.parse(user || '{}');
-            if (parsedUser) {
+            const parsedToken = JSON.parse(token || '{}');
+            if (parsedUser && parsedToken) {
+                console.log('decoded successfully')
                 setUser(parsedUser)
+                setTokenDecoded(parsedToken)
+
             }
         } catch (e) {
             console.log(e)
@@ -77,7 +86,8 @@ const UserContext = ({ children }: any) => {
                 clearUser,
                 isAuthenticated,
                 setUserData,
-                user
+                user,
+                tokenDecoded
             }}
         >
             {children}

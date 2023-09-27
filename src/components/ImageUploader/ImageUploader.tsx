@@ -25,7 +25,6 @@ const ImageUploader = ({ image, setImage, label }: Props) => {
             quality: 1,
         });
 
-        console.log(result);
 
         if (!result.canceled) {
             uploadToSupa(result)

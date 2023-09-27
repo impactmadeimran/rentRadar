@@ -14,9 +14,6 @@ export const authenticate = async (data: any) => {
 export const getToken = async () => {
     try {
         const token = await AsyncStorage.getItem('userToken');
-        // setToken(token as any)
-        // console.log(token)
-        // return token
     } catch (e) {
         console.log(e)
     }

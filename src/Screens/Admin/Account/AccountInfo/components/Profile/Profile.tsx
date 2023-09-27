@@ -6,6 +6,7 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 import tw from 'twrnc'
 import emptyUser from 'src/assets/noUser.png'
 import { Pen } from 'lucide-react-native'
+import Loader from '../../../../../../../src/components/Loader/Loader'
 
 const Profile = () => {
     const fetchUser = async () => {
@@ -13,12 +14,13 @@ const Profile = () => {
         return res.data
     }
 
-    const { data } = useQuery({
+    const { data, isLoading } = useQuery({
         queryFn: fetchUser,
         queryKey: ['user_data']
     })
 
-    console.log(data)
+    if (isLoading) return <Loader />
+
     return (
         <SafeAreaView style={tw`p-4`}>
             <View style={tw`flex items-center mb-5`}>

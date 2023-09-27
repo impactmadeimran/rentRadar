@@ -5,6 +5,7 @@ import { Controller, useForm } from "react-hook-form"
 import { useMutation } from "@tanstack/react-query"
 import { useUserContext } from "../../context/UserContext"
 import Loader from "../../components/Loader/Loader"
+import jwt_decode from "jwt-decode";
 
 const Login = ({ navigation }: any) => {
     const { register, handleSubmit, control } = useForm();
@@ -20,19 +21,20 @@ const Login = ({ navigation }: any) => {
         mutationKey: ['login'],
         mutationFn: login,
         onSuccess: (data) => {
-            // console.log(data)
-            if (data?.jwt) {
-                authenticate?.(data?.jwt)
-                setUserData(data)
-                navigation.navigate('Home')
-            } else {
-                Alert.alert('Error')
+            const decoded: any = jwt_decode(data?.jwt);
+            if (decoded) {
+                if (data?.jwt) {
+                    authenticate?.(data?.jwt)
+                    setUserData(data, decoded)
+                    navigation.navigate('Home')
+                } else {
+                    Alert.alert('Error')
+                }
             }
         }
     })
 
     const onSubmit = (data: any) => {
-        console.log(data)
         mutate(data)
         Keyboard.dismiss()
 

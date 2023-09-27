@@ -1,7 +1,7 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack"
-import AuthenticateUser from "src/Screens/Admin/Account/AuthenticateUser/AuthenticateUser";
-import AddItems from "src/Screens/Admin/Create/components/AddItems"
-import { useUserContext } from "src/context/UserContext";
+import AuthenticateUser from "../../../../../src/Screens/Admin/Account/AuthenticateUser/AuthenticateUser";
+import AddItems from "../../../../../src/Screens/Admin/Create/components/AddItems"
+import { useUserContext } from "../../../../../src/context/UserContext";
 
 const Stack = createNativeStackNavigator()
 

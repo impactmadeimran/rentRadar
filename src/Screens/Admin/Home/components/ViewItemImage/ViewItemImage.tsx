@@ -1,4 +1,4 @@
-import { FlatList, Text, View, Dimensions, Image, TouchableOpacity } from 'react-native'
+import { FlatList, View, Dimensions, Image, TouchableOpacity } from 'react-native'
 import React from 'react'
 import tw from 'twrnc'
 import { XIcon } from 'lucide-react-native';
@@ -6,8 +6,8 @@ import { XIcon } from 'lucide-react-native';
 const ViewItemImage = ({ route, navigation }: any) => {
     const { images } = route.params;
     const windowWidth = Dimensions.get('window').width;
-    const windowHeight = Dimensions.get('window').height;
-    console.log('images', images)
+    // const windowHeight = Dimensions.get('window').height;
+    // console.log('images', images)
     return (
         <View style={tw` bg-gray-800 flex-1 flex flex-row items-center`}>
             <TouchableOpacity onPress={() => navigation.goBack()} style={tw`absolute top-10 right-5`}>

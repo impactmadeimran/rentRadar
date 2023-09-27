@@ -23,6 +23,8 @@ const ViewItem = ({ route, navigation }: any) => {
 
     const nonNullImages = images.filter((item) => item?.name !== null)
 
+    if (!data) return null
+
     return (
         <View style={tw`flex-1`}>
             {/* <Text>ViewItem</Text> */}
