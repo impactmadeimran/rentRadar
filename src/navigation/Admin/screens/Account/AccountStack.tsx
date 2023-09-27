@@ -8,14 +8,14 @@ import Profile from '../../../../Screens/Admin/Account/AccountInfo/components/Pr
 
 const Stack = createNativeStackNavigator()
 const AccountStack = () => {
-    // const { token } = useUserContext();
+    const { token } = useUserContext();
 
-    // if (token === undefined) return <Stack.Navigator>
-    //     <Stack.Screen name='AuthenticateUser' component={AuthenticateUser} options={{ headerShown: false }} />
-    // </Stack.Navigator>
+    if (token === undefined) return <Stack.Navigator>
+        <Stack.Screen name='AuthenticateUser' component={AuthenticateUser} options={{ headerShown: false }} />
+    </Stack.Navigator>
     return (
         <Stack.Navigator>
-            <Stack.Screen name='AuthenticateUser' component={AuthenticateUser} options={{ headerShown: false }} />
+            {/* <Stack.Screen name='AuthenticateUser' component={AuthenticateUser} options={{ headerShown: false }} /> */}
             <Stack.Screen name='AccountInfo' component={AccountInfo} options={{ headerTitle: 'Account', headerBackVisible: false }} />
             {/* {token === undefined && <Stack.Screen name='AuthenticateUser' component={AuthenticateUser} options={{ headerShown: false }} />} */}
             {/* <Stack.Group screenOptions={{ presentation: 'modal' }}> */}

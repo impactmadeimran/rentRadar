@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity, Keyboard, TouchableWithoutFeedback } from 'react-native'
+import { View, Text, TouchableOpacity, ScrollView } from 'react-native'
 import React, { useEffect } from 'react'
 import tw from 'twrnc'
 import { ChevronRight } from 'lucide-react-native'
@@ -35,7 +35,7 @@ const AccountInfo = ({ navigation }: any) => {
     // }, [])
 
     return (
-        <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+        <ScrollView style={tw`flex-1 bg-gray-400`} keyboardDismissMode='on-drag' keyboardShouldPersistTaps='handled' accessible={false}>
 
             <View style={tw`p-4 flex-1`}>
                 <View style={tw`bg-white py-3 px-2 rounded-lg`}>
@@ -49,7 +49,7 @@ const AccountInfo = ({ navigation }: any) => {
                     }
                 </View>
             </View>
-        </TouchableWithoutFeedback>
+        </ScrollView>
     )
 }
 

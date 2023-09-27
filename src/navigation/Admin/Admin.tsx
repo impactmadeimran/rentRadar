@@ -6,6 +6,8 @@ import Account from "../../Screens/Admin/Account/Account";
 import axios from "axios";
 import { useUserContext } from "../../context/UserContext";
 import Explore from "../../Screens/Admin/Explore/Explore";
+import { PlusSquareIcon } from "lucide-react-native";
+import Create from "../../Screens/Admin/Create/Create";
 
 const Tab = createBottomTabNavigator();
 
@@ -45,9 +47,9 @@ const Admin = () => {
                     return <AntDesign name={'search1'} size={20} color={color} />;
                 }
             }} />
-            <Tab.Screen name="Favorites" component={Message} options={{
+            <Tab.Screen name="Create New" component={Create} options={{
                 tabBarIcon: ({ color }) => {
-                    return <AntDesign name={'hearto'} size={20} color={color} />;
+                    return <PlusSquareIcon name={'hearto'} size={20} color={color} />;
                 }
             }} />
             <Tab.Screen name="Message" component={Message} options={{

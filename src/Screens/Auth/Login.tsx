@@ -8,7 +8,7 @@ import Loader from "../../components/Loader/Loader"
 
 const Login = ({ navigation }: any) => {
     const { register, handleSubmit, control } = useForm();
-    const { authenticate } = useUserContext()
+    const { authenticate, setUserData, user } = useUserContext()
     const login = async (data: any) => {
         const res = await api.post('auth/login/', {
             ...data
@@ -20,9 +20,11 @@ const Login = ({ navigation }: any) => {
         mutationKey: ['login'],
         mutationFn: login,
         onSuccess: (data) => {
+            // console.log(data)
             if (data?.jwt) {
                 authenticate?.(data?.jwt)
-                navigation.navigate('AccountInfo')
+                setUserData(data)
+                navigation.navigate('Home')
             } else {
                 Alert.alert('Error')
             }
