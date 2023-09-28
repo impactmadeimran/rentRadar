@@ -18,7 +18,7 @@ const AccountInfo = ({ navigation }: any) => {
         },
         {
             name: 'Favorites',
-            route: 'profile',
+            route: 'MyFavorites',
             icon: StarIcon
         },
     ]

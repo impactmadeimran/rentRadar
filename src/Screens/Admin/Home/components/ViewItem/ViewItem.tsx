@@ -38,8 +38,6 @@ const ViewItem = ({ route, navigation }: any) => {
 
     const nonNullImages = images.filter((item) => item?.name !== null)
 
-
-
     const addToFavorites = async () => {
         if (token) {
             const res = await api.post('/rental/favorites/', {
@@ -70,7 +68,7 @@ const ViewItem = ({ route, navigation }: any) => {
         <View style={tw`flex-1`}>
             <ScrollView style={tw``}>
                 {/* <Text>ViewItem</Text> */}
-                <TouchableOpacity onPress={() => navigation.goBack()} style={tw`absolute top-14 bg-slate-400 z-50 p-2 ml-5 rounded`}>
+                <TouchableOpacity onPress={() => navigation.goBack()} style={tw`absolute top-14 bg-red-700 z-50 p-2 ml-5 rounded`}>
                     <MoveLeft color='white' height={24} width={24} />
                 </TouchableOpacity>
                 <View style={tw` bg-gray-200`}>

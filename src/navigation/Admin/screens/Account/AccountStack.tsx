@@ -5,6 +5,8 @@ import { useUserContext } from '../../../../context/UserContext'
 import AuthenticateUser from '../../../../Screens/Admin/Account/AuthenticateUser/AuthenticateUser'
 import Profile from '../../../../Screens/Admin/Account/AccountInfo/components/Profile/Profile'
 import Posts from '../../../../Screens/Admin/Account/AccountInfo/components/Posts/Posts'
+import Favorites from '../../../../Screens/Admin/Account/AccountInfo/components/Favorites/Favorites'
+import ViewItem from '../../../../Screens/Admin/Home/components/ViewItem/ViewItem'
 
 const Stack = createNativeStackNavigator()
 const AccountStack = () => {
@@ -20,6 +22,8 @@ const AccountStack = () => {
             {/* <Stack.Group screenOptions={{ presentation: 'modal' }}> */}
             <Stack.Screen name='ViewProfile' component={Profile} options={{ headerBackTitleVisible: false, headerTitle: 'Profile' }} />
             <Stack.Screen name='MyPosts' component={Posts} options={{ headerBackTitleVisible: false, headerTitle: 'My Posts' }} />
+            <Stack.Screen name='MyFavorites' component={Favorites} options={{ headerBackTitleVisible: false, headerTitle: 'My Favorites' }} />
+            <Stack.Screen name='ViewItemAccount' component={ViewItem} options={{ headerShown: false }} />
             {/* </Stack.Group> */}
         </Stack.Navigator>
     )
