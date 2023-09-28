@@ -6,8 +6,7 @@ import { XIcon } from 'lucide-react-native';
 const ViewItemImage = ({ route, navigation }: any) => {
     const { images } = route.params;
     const windowWidth = Dimensions.get('window').width;
-    // const windowHeight = Dimensions.get('window').height;
-    // console.log('images', images)
+    if (!images) return null
     return (
         <View style={tw` bg-gray-800 flex-1 flex flex-row items-center`}>
             <TouchableOpacity onPress={() => navigation.goBack()} style={tw`absolute top-10 right-5`}>
@@ -25,17 +24,6 @@ const ViewItemImage = ({ route, navigation }: any) => {
 
                 )}
                 keyExtractor={(item) => item?.id as any} />
-            {/* <FlatList
-                horizontal
-                data={images}
-                pagingEnabled
-                // showsHorizontalScrollIndicator={false}
-                renderItem={({ item }) => (
-
-                    <Image source={{ uri: item?.name as string }} style={[tw`w-full `, { height: 100, width: 100 }]} />
-
-                )}
-                keyExtractor={(item) => item?.id as any} /> */}
         </View>
     )
 }

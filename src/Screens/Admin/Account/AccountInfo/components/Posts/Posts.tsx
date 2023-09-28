@@ -24,7 +24,7 @@ const Posts = () => {
             {
                 data?.map((item: any) => (
 
-                    <TouchableOpacity>
+                    <TouchableOpacity key={item?.id}>
                         <View style={tw`flex-row gap-4`}>
                             <Image source={{ uri: item?.image1 }} style={tw`h-24 w-24 rounded-lg`} />
                             <View>
