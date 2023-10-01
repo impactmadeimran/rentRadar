@@ -16,10 +16,7 @@ const AccountStack = () => {
     </Stack.Navigator>
     return (
         <Stack.Navigator>
-            {/* <Stack.Screen name='AuthenticateUser' component={AuthenticateUser} options={{ headerShown: false }} /> */}
             <Stack.Screen name='AccountInfo' component={AccountInfo} options={{ headerTitle: 'Account', headerBackVisible: false }} />
-            {/* {token === undefined && <Stack.Screen name='AuthenticateUser' component={AuthenticateUser} options={{ headerShown: false }} />} */}
-            {/* <Stack.Group screenOptions={{ presentation: 'modal' }}> */}
             <Stack.Screen name='ViewProfile' component={Profile} options={{ headerBackTitleVisible: false, headerTitle: 'Profile' }} />
             <Stack.Screen name='MyPosts' component={Posts} options={{ headerBackTitleVisible: false, headerTitle: 'My Posts' }} />
             <Stack.Screen name='MyFavorites' component={Favorites} options={{ headerBackTitleVisible: false, headerTitle: 'My Favorites' }} />

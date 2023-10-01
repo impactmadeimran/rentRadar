@@ -1,5 +1,5 @@
 import { ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
-import React, { useCallback, useRef, useState } from 'react'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 import tw from 'twrnc'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { BottomSheetModal, BottomSheetModalProvider } from '@gorhom/bottom-sheet';
@@ -23,6 +23,7 @@ const AddItem = ({ navigation }: any) => {
     const [image8, setImage8] = useState<string>('');
     const [image9, setImage9] = useState<string>('');
     const [image10, setImage10] = useState<string>('');
+    const [allImages, setAllImages] = useState({})
     const [categories, setCategories] = useState<string>('');
     const [location, setLocation] = useState<string>('');
     const [title, setTitle] = useState<string>('');
@@ -53,6 +54,38 @@ const AddItem = ({ navigation }: any) => {
     const createAd = async () => {
         if (!imageValid || title !== '' || description !== '' || location !== '' || rate !== '' || leaseCost !== '' || leaseTerm !== '' || categories !== '') {
 
+            const AllImages: any = {}
+            if (image1 !== '') {
+                AllImages['image1'] = image1
+            }
+            if (image2 !== '') {
+                AllImages['image2'] = image2
+            }
+            if (image3 !== '') {
+                AllImages['image3'] = image3
+            }
+            if (image4 !== '') {
+                AllImages['image4'] = image4
+            }
+            if (image5 !== '') {
+                AllImages['image5'] = image5
+            }
+            if (image6 !== '') {
+                AllImages['image6'] = image6
+            }
+            if (image7 !== '') {
+                AllImages['image7'] = image7
+            }
+            if (image8 !== '') {
+                AllImages['image8'] = image8
+            }
+            if (image9 !== '') {
+                AllImages['image9'] = image9
+            }
+            if (image10 !== '') {
+                AllImages['image10'] = image10
+            }
+
             const res = await api.post('/rental/create/', {
                 title,
                 location,
@@ -61,16 +94,7 @@ const AddItem = ({ navigation }: any) => {
                 lease_term: leaseTerm,
                 description,
                 category: selectedCategory?.value,
-                image1,
-                image2,
-                image3,
-                image4,
-                image5,
-                image6,
-                image7,
-                image8,
-                image9,
-                image10,
+                ...AllImages
 
             })
             return res.data
@@ -86,7 +110,6 @@ const AddItem = ({ navigation }: any) => {
             queryClient.invalidateQueries(['getAllRent'])
         }
     })
-
 
     if (isLoading) return <Loader />
 
