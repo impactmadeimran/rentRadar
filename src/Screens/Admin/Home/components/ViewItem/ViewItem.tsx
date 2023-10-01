@@ -55,13 +55,9 @@ const ViewItem = ({ route, navigation }: any) => {
     const { mutate } = useMutation({
         mutationKey: ['add_to_favorites'],
         mutationFn: addToFavorites,
-        onSuccess: (data) => {
-            console.log(data)
+        onSuccess: () => {
             refetch()
         },
-        onError: (error) => {
-            console.log(error)
-        }
     })
 
     const getReviews = async () => {
@@ -85,17 +81,12 @@ const ViewItem = ({ route, navigation }: any) => {
     const { mutate: createReviewMutate, isLoading: addReviewLoad } = useMutation({
         mutationKey: ['createReview'],
         mutationFn: createReview,
-        onSuccess: (data) => {
-            console.log(data)
+        onSuccess: () => {
             fetchReviews()
             bottomSheetRef.current?.dismiss()
-        },
-        onError: (error) => {
-            console.log(error)
         }
     })
 
-    console.log('revs', reviews)
 
     const bottomSheetRef = useRef<BottomSheetModal>(null);
 
