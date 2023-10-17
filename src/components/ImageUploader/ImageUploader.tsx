@@ -11,9 +11,10 @@ interface Props {
     label: string;
     setImage: Dispatch<SetStateAction<any>>;
     image: string;
+    folder?: string;
 }
 
-const ImageUploader = ({ image, setImage, label }: Props) => {
+const ImageUploader = ({ image, setImage, label, folder }: Props) => {
     const { user } = useUserContext()
     const [imagePath, setImagePath] = useState<any>(null);
     const pickImage = async () => {
@@ -39,7 +40,7 @@ const ImageUploader = ({ image, setImage, label }: Props) => {
             const filePath = `${user?.email}/${new Date().getTime()}-${img.fileName}`;
             const contentType = img.type === 'image' ? 'image/jpeg' : 'video/mp4';
 
-            const { data, error } = await supabase.storage.from('rental_photos').upload(filePath, decode(base64), { contentType })
+            const { data, error } = await supabase.storage.from(folder ?? 'rental_photos').upload(filePath, decode(base64), { contentType })
             if (error) {
                 console.log('error', error)
             } else {
@@ -52,7 +53,7 @@ const ImageUploader = ({ image, setImage, label }: Props) => {
 
     function downloadImage(path: string) {
         try {
-            const { data } = supabase.storage.from('rental_photos').getPublicUrl(path)
+            const { data } = supabase.storage.from(folder ?? 'rental_photos').getPublicUrl(path)
             // console.log(data)
             setImage(data?.publicUrl)
         } catch (error) {

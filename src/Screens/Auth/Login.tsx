@@ -9,7 +9,7 @@ import jwt_decode from "jwt-decode";
 
 const Login = ({ navigation }: any) => {
     const { register, handleSubmit, control } = useForm();
-    const { authenticate, setUserData, user } = useUserContext()
+    const { authenticate, setUserData } = useUserContext()
     const login = async (data: any) => {
         const res = await api.post('auth/login/', {
             ...data

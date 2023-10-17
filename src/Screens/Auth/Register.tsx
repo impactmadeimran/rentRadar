@@ -15,8 +15,8 @@ import { useUserContext } from "../../../src/context/UserContext";
 const Register = ({ navigation }: any) => {
     const { authenticate, setUserData, user } = useUserContext()
 
-    const [date, setDate] = useState(new Date());
-    const [gender, setGender] = useState('male')
+    const [date, setDate] = useState(null);
+    const [gender, setGender] = useState('')
     const [type, setType] = useState("Personal")
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
@@ -121,7 +121,7 @@ const Register = ({ navigation }: any) => {
                             />
 
                             <TouchableOpacity onPress={handlePresentModalPress} style={tw`border border-gray-200 p-2 rounded`} >
-                                <Text>{moment(date).format('LL') ?? 'Date of birth'}</Text>
+                                {date !== null ? <Text> {moment(date).format('LL')}</Text> : <Text style={tw`text-gray-400`}>Date of birth</Text>}
                             </TouchableOpacity>
 
 

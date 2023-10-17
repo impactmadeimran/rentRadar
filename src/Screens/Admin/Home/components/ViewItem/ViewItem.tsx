@@ -2,7 +2,7 @@ import { View, Text, TouchableOpacity, Image, FlatList, Dimensions, ScrollView }
 import React, { useCallback, useRef, useState } from 'react'
 import { HeartIcon, MapPin, MoveLeft, PenLine } from 'lucide-react-native';
 import tw from 'twrnc'
-import api from '../../../../../../utils';
+import api, { CediFormat } from '../../../../../../utils';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Loader from '../../../../../../src/components/Loader/Loader';
@@ -87,6 +87,7 @@ const ViewItem = ({ route, navigation }: any) => {
         }
     })
 
+    console.log(reviews)
 
     const bottomSheetRef = useRef<BottomSheetModal>(null);
 
@@ -129,7 +130,7 @@ const ViewItem = ({ route, navigation }: any) => {
                         <Text style={tw`text-xl font-semibold tracking-wider text-red-700`}>{data?.title}</Text>
                         <Text style={tw`text-xl font-semibold tracking-wider text-red-700`}>{data?.user?.bus_name}</Text>
                         <View style={tw`justify-between items-center flex-row`}>
-                            <Text style={tw`text-xl font-semibold tracking-wider text-red-700`}>{data?.lease_cost}</Text>
+                            <Text style={tw`text-xl font-semibold tracking-wider text-red-700`}>{CediFormat.format(data?.lease_cost)}</Text>
                             <TouchableOpacity onPress={() => mutate()}>
                                 {!data?.is_favorited ? <HeartIcon height={24} width={24} style={tw`text-red-500`} />
                                     : <AntDesign name={'heart'} size={20} color={'red'} />
@@ -167,7 +168,7 @@ const ViewItem = ({ route, navigation }: any) => {
                                 </View>
                                 <View style={tw`flex-row items-center border-b border-gray-200 py-4`}>
                                     <Text style={tw`text-base capitalize flex-1`}>Cost</Text>
-                                    <Text style={tw`text-base capitalize flex-1`}>{data?.lease_cost}</Text>
+                                    <Text style={tw`text-base capitalize flex-1`}>{CediFormat.format(data?.lease_cost)}</Text>
                                 </View>
                                 <View style={tw`flex-row items-center border-b border-gray-200 py-4`}>
                                     <Text style={tw`text-base capitalize flex-1`}>Location</Text>
