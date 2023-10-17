@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react"
-import { SafeAreaView, ScrollView, Text, TextInput, TouchableOpacity, View, Platform, Alert } from "react-native"
+import { SafeAreaView, ScrollView, Text, TextInput, TouchableOpacity, View, Platform, Alert, Keyboard, TouchableWithoutFeedback } from "react-native"
 import tw from 'twrnc'
 import CustomSelect from "../../components/Select/CustomSelect"
 import SegmentedControl from '@react-native-segmented-control/segmented-control';
@@ -92,80 +92,81 @@ const Register = ({ navigation }: any) => {
 
     return (
         <SafeAreaView style={tw`flex flex-1 items-center justify-center w-full `}>
-            <BottomSheetModalProvider>
-                <ScrollView style={tw`  w-full px-5 `}>
-                    <View style={tw`px-6 bg-slate-50 py-10 rounded-lg mt-10`}>
-                        <Text style={tw`text-center text-2xl font-semibold`}>Let's Get Started</Text>
-                        <Text style={tw`text-center text-gray-500 text-sm `}>Create an account</Text>
-                        <View style={tw`w-full mt-7 flex gap-4`}>
-                            <SegmentedControl
-                                values={['Personal', 'Business']}
-                                selectedIndex={0}
-                                onChange={(event) => {
-                                    setType(event.nativeEvent.value)
-                                }}
-                            />
-                            <TextInput onChangeText={setEmail} value={email} style={tw`border border-gray-200 p-2 rounded`} placeholder="Email" autoCapitalize={'none'} />
-                            <View style={tw` flex-row w-full gap-2`}>
-                                <TextInput onChangeText={setFirstName} value={firstName} style={tw`border border-gray-200 p-2 rounded flex-1`} placeholder="First name" />
-                                <TextInput onChangeText={setLastName} value={lastName} style={tw`border border-gray-200 p-2 rounded flex-1`} placeholder="Last name" />
-                            </View>
-                            {type === "Business" && <TextInput onChangeText={setBusinessName} value={businessName} style={tw`border border-gray-200 p-2 rounded`} placeholder="Business name" />}
-                            <TextInput onChangeText={setPhone} value={phone} style={tw`border border-gray-200 p-2 rounded`} placeholder="Phone Number" />
-                            <TextInput onChangeText={setPassword} value={password} style={tw`border border-gray-200 p-2 rounded`} placeholder="Password" secureTextEntry={true} />
-                            <CustomSelect
-                                placeholder="Gender"
-                                options={['male', 'female', 'other']}
-                                onSelect={setGender}
-                                selectedOption={gender}
-                            />
-
-                            <TouchableOpacity onPress={handlePresentModalPress} style={tw`border border-gray-200 p-2 rounded`} >
-                                {date !== null ? <Text> {moment(date).format('LL')}</Text> : <Text style={tw`text-gray-400`}>Date of birth</Text>}
-                            </TouchableOpacity>
-
-
-
-                            {
-                                showAndroidDate && <DateTimePicker display='default' style={tw`border border-gray-200 p-2 rounded w-full`} mode="date" onChange={onDateChange} value={new Date()} />
-                            }
-
-                            <BottomSheetModal
-                                ref={bottomSheetRef}
-                                index={1}
-                                snapPoints={['30%', '40%']}
-                                enablePanDownToClose
-                                // snapPoints={snapPoints}
-                                keyboardBehavior='interactive'
-                            // onChange={handleSheetChanges}
-                            >
-                                <View style={tw`flex items-end`}>
-                                    <TouchableOpacity onPress={() => bottomSheetRef.current?.dismiss()}>
-                                        <Text style={tw`px-4 text-blue-500 text-lg`}>Done</Text>
-                                    </TouchableOpacity>
+            <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+                <BottomSheetModalProvider>
+                    <ScrollView style={tw`  w-full px-5 `}>
+                        <View style={tw`px-6 bg-slate-50 py-10 rounded-lg mt-10`}>
+                            <Text style={tw`text-center text-2xl font-semibold`}>Let's Get Started</Text>
+                            <Text style={tw`text-center text-gray-500 text-sm `}>Create an account</Text>
+                            <View style={tw`w-full mt-7 flex gap-4`}>
+                                <SegmentedControl
+                                    values={['Personal', 'Business']}
+                                    selectedIndex={0}
+                                    onChange={(event) => {
+                                        setType(event.nativeEvent.value)
+                                    }}
+                                />
+                                <TextInput onChangeText={setEmail} value={email} style={tw`border border-gray-200 p-2 rounded`} placeholder="Email" autoCapitalize={'none'} />
+                                <View style={tw` flex-row w-full gap-2`}>
+                                    <TextInput onChangeText={setFirstName} value={firstName} style={tw`border border-gray-200 p-2 rounded flex-1`} placeholder="First name" />
+                                    <TextInput onChangeText={setLastName} value={lastName} style={tw`border border-gray-200 p-2 rounded flex-1`} placeholder="Last name" />
                                 </View>
-                                <DateTimePicker display='spinner' style={tw`border border-gray-200 p-2 rounded w-full`} mode="date" onChange={onDateChange} value={new Date()} />
+                                {type === "Business" && <TextInput onChangeText={setBusinessName} value={businessName} style={tw`border border-gray-200 p-2 rounded`} placeholder="Business name" />}
+                                <TextInput onChangeText={setPhone} value={phone} style={tw`border border-gray-200 p-2 rounded`} placeholder="Phone Number" />
+                                <TextInput onChangeText={setPassword} value={password} style={tw`border border-gray-200 p-2 rounded`} placeholder="Password" secureTextEntry={true} />
+                                <CustomSelect
+                                    placeholder="Gender"
+                                    options={['male', 'female', 'other']}
+                                    onSelect={setGender}
+                                    selectedOption={gender}
+                                />
 
-                            </BottomSheetModal>
-                            <View style={tw`flex flex-row justify-end`}>
-                                <Text style={tw`text-xs font-light`}>Forgot Password?</Text>
-                            </View>
-                            <TouchableOpacity style={tw`bg-red-500 p-2 rounded`}>
-                                <Text onPress={() => mutate()} style={tw`text-center text-white font-bold`}>REGISTER</Text>
-                            </TouchableOpacity>
-                        </View>
-                        <View style={tw`mt-10`}>
-                            <View style={tw`flex flex-row justify-center`}>
-                                <Text style={tw`text-center text-xs`}>Already have an account? </Text>
-                                <TouchableOpacity onPress={() => navigation.navigate('Login')}>
-                                    <Text style={tw`font-semibold`}>Sign in</Text>
+                                <TouchableOpacity onPress={handlePresentModalPress} style={tw`border border-gray-200 p-2 rounded`} >
+                                    {date !== null ? <Text> {moment(date).format('LL')}</Text> : <Text style={tw`text-gray-400`}>Date of birth</Text>}
+                                </TouchableOpacity>
+
+
+
+                                {
+                                    showAndroidDate && <DateTimePicker display='default' style={tw`border border-gray-200 p-2 rounded w-full`} mode="date" onChange={onDateChange} value={new Date()} />
+                                }
+
+                                <BottomSheetModal
+                                    ref={bottomSheetRef}
+                                    index={1}
+                                    snapPoints={['30%', '40%']}
+                                    enablePanDownToClose
+                                    // snapPoints={snapPoints}
+                                    keyboardBehavior='interactive'
+                                // onChange={handleSheetChanges}
+                                >
+                                    <View style={tw`flex items-end`}>
+                                        <TouchableOpacity onPress={() => bottomSheetRef.current?.dismiss()}>
+                                            <Text style={tw`px-4 text-blue-500 text-lg`}>Done</Text>
+                                        </TouchableOpacity>
+                                    </View>
+                                    <DateTimePicker display='spinner' style={tw`border border-gray-200 p-2 rounded w-full`} mode="date" onChange={onDateChange} value={new Date()} />
+
+                                </BottomSheetModal>
+                                <View style={tw`flex flex-row justify-end`}>
+                                    <Text style={tw`text-xs font-light`}>Forgot Password?</Text>
+                                </View>
+                                <TouchableOpacity style={tw`bg-red-500 p-2 rounded`}>
+                                    <Text onPress={() => mutate()} style={tw`text-center text-white font-bold`}>REGISTER</Text>
                                 </TouchableOpacity>
                             </View>
+                            <View style={tw`mt-10`}>
+                                <View style={tw`flex flex-row justify-center`}>
+                                    <Text style={tw`text-center text-xs`}>Already have an account? </Text>
+                                    <TouchableOpacity onPress={() => navigation.navigate('Login')}>
+                                        <Text style={tw`font-semibold`}>Sign in</Text>
+                                    </TouchableOpacity>
+                                </View>
+                            </View>
                         </View>
-                    </View>
-                </ScrollView>
-            </BottomSheetModalProvider>
-
+                    </ScrollView>
+                </BottomSheetModalProvider>
+            </TouchableWithoutFeedback>
         </SafeAreaView >
     )
 }

@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity, Image, FlatList, Dimensions, ScrollView } from 'react-native'
+import { View, Text, TouchableOpacity, Image, FlatList, Dimensions, ScrollView, KeyboardAvoidingView, TouchableWithoutFeedback, Keyboard, Alert } from 'react-native'
 import React, { useCallback, useRef, useState } from 'react'
 import { HeartIcon, MapPin, MoveLeft, PenLine } from 'lucide-react-native';
 import tw from 'twrnc'
@@ -87,13 +87,38 @@ const ViewItem = ({ route, navigation }: any) => {
         }
     })
 
-    console.log(reviews)
+    // console.log(data?.user?.id)
 
     const bottomSheetRef = useRef<BottomSheetModal>(null);
 
     const handlePresentModalPress = useCallback(() => {
         bottomSheetRef.current?.present();
     }, []);
+
+
+    const enquire = (id: any) => {
+        if (!token) {
+            Alert.alert('You have to be logged in to continue', 'To continue, press Login', [
+                {
+                    text: 'Cancel',
+                    onPress: () => console.log('Cancel Pressed'),
+                    style: 'cancel',
+                },
+                {
+                    text: 'Login', onPress: () => navigation.navigate('Auth', {
+                        screen: 'Login'
+                    })
+                },
+            ]);
+        } else {
+            navigation.navigate('Message', {
+                screen: 'Conversation',
+                params: {
+                    user: data?.user
+                }
+            })
+        }
+    }
 
     if (isLoading || addReviewLoad) return <Loader />
 
@@ -106,9 +131,7 @@ const ViewItem = ({ route, navigation }: any) => {
                     <TouchableOpacity onPress={() => navigation.goBack()} style={tw`absolute top-14 bg-red-700 z-50 p-2 ml-5 rounded-full`}>
                         <MoveLeft color='white' height={24} width={24} />
                     </TouchableOpacity>
-                    <TouchableOpacity onPress={handlePresentModalPress} style={tw`absolute top-14 right-5 bg-red-700 z-50 p-2 ml-5 rounded-full`}>
-                        <PenLine color='white' height={24} width={24} />
-                    </TouchableOpacity>
+
                     <View style={tw` bg-gray-200`}>
                         <FlatList
                             horizontal
@@ -140,6 +163,14 @@ const ViewItem = ({ route, navigation }: any) => {
                         <View style={tw`mt-6 flex-row items-center gap-2`}>
                             <MapPin height={24} width={24} style={tw`text-gray-600`} />
                             <Text style={tw`text-lg text-gray-600`}>{data?.location}</Text>
+                        </View>
+                        <View style={tw`flex flex-row w-full justify-around mt-5`}>
+                            <TouchableOpacity onPress={enquire} style={tw`border border-red-500 p-2 rounded w-32`}>
+                                <Text style={tw`text-center text-red-500 text-lg font-bold`}>Enquire</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity style={tw`bg-red-500 p-2 rounded w-32 `}>
+                                <Text style={tw`text-center text-white text-lg font-bold`}>Call</Text>
+                            </TouchableOpacity>
                         </View>
                         <View style={tw`py-4 border-t border-gray-300 mt-4`}>
                             <Text style={tw`text-xl tracking-wider font-semibold`}>
@@ -177,7 +208,13 @@ const ViewItem = ({ route, navigation }: any) => {
                             </View>
                         </View>
                         <View style={tw`py-4 border-t border-gray-300 my-4`}>
-                            <Text style={tw`text-xl tracking-wider font-semibold mb-3`}>Feedback</Text>
+                            <View style={tw`flex flex-row justify-between items-center`}>
+                                <Text style={tw`text-xl tracking-wider font-semibold mb-3`}>Feedback</Text>
+                                <TouchableOpacity onPress={handlePresentModalPress} >
+                                    {/* <PenLine color='white' height={24} width={24} /> */}
+                                    <Text style={tw`text-red-600`}>Leave feedback</Text>
+                                </TouchableOpacity>
+                            </View>
                             <View style={tw`gap-2`}>
                                 {
                                     reviews?.map((item: any, index: number) => (
@@ -198,22 +235,23 @@ const ViewItem = ({ route, navigation }: any) => {
                     <BottomSheetModal
                         ref={bottomSheetRef}
                         index={1}
-                        snapPoints={['79%', '80%']}
+                        snapPoints={['39%', '40%']}
                         enablePanDownToClose
                         // snapPoints={snapPoints}
                         keyboardBehavior='interactive'
                     // onChange={handleSheetChanges}
                     >
-                        <View style={tw`p-4`}>
-
-                            <Text style={tw`text-lg font-semibold mb-2`}>Write a review</Text>
-                            <View style={tw`gap-4`}>
-                                <TextInput multiline onChangeText={setReview} placeholder="Enter review" style={tw`p-2 border border-gray-400 rounded min-h-24`} />
-                                <TouchableOpacity onPress={() => createReviewMutate()} style={tw`bg-red-500 text-center p-2 rounded`}>
-                                    <Text style={tw`text-white flex text-lg text-center font-extrabold`}>Add Review</Text>
-                                </TouchableOpacity>
+                        <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+                            <View style={tw`p-4`}>
+                                <Text style={tw`text-lg font-semibold mb-2`}>Write a review</Text>
+                                <View style={tw`gap-4`}>
+                                    <TextInput multiline onChangeText={setReview} placeholder="Enter review" style={tw`p-2 border border-gray-400 rounded min-h-24`} />
+                                    <TouchableOpacity onPress={() => createReviewMutate()} style={tw`bg-red-500 text-center p-2 rounded`}>
+                                        <Text style={tw`text-white flex text-lg text-center font-extrabold`}>Add Review</Text>
+                                    </TouchableOpacity>
+                                </View>
                             </View>
-                        </View>
+                        </TouchableWithoutFeedback>
                     </BottomSheetModal>
                 </BottomSheetModalProvider>
             </ScrollView>

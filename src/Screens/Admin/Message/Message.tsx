@@ -1,11 +1,9 @@
-import { Text, View } from 'react-native'
 import React from 'react'
+import MessageStack from '../../../../src/navigation/Admin/screens/Message/MessageStack'
 
 const Message = () => {
     return (
-        <View>
-            <Text>Message</Text>
-        </View>
+        <MessageStack />
     )
 }
 
