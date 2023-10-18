@@ -1,7 +1,7 @@
 import { View, Text, TouchableOpacity, ScrollView } from 'react-native'
 import React from 'react'
 import tw from 'twrnc'
-import { ChevronRight, PenSquareIcon, StarIcon, User2Icon } from 'lucide-react-native'
+import { ChevronRight, PenSquareIcon, ShieldCheck, StarIcon, User2Icon } from 'lucide-react-native'
 
 const AccountInfo = ({ navigation }: any) => {
 
@@ -20,6 +20,11 @@ const AccountInfo = ({ navigation }: any) => {
             name: 'Favorites',
             route: 'MyFavorites',
             icon: StarIcon
+        },
+        {
+            name: 'Upload KYC',
+            route: 'KYC',
+            icon: ShieldCheck
         },
     ]
 

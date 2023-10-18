@@ -4,14 +4,20 @@ import { useQuery } from '@tanstack/react-query'
 import api from '../../../../../../utils'
 import tw from 'twrnc'
 import { SendHorizonal } from 'lucide-react-native'
+import { useUserContext } from '../../../../../../src/context/UserContext'
 
 const Conversation = ({ route }: any) => {
+    const { token } = useUserContext()
     const [convoId, setConvoId] = useState('')
     const [message, setMessage] = useState('')
     const user = route.params?.user;
 
     const startConvo = async () => {
-        const res = await api.post(`/chat/start/${user?.id}/`)
+        const res = await api.post(`/chat/start/${user?.id}/`, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        })
         return res.data
     }
 
