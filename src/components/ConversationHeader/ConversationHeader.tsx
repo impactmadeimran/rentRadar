@@ -1,17 +1,24 @@
-import { View, Text } from 'react-native'
+import { View, Text, Image, TouchableOpacity } from 'react-native'
 import React from 'react'
 import tw from 'twrnc'
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { ChevronLeft } from 'lucide-react-native';
 
-const ConversationHeader = ({ route }: any) => {
-    const user = route.params?.user;
+const ConversationHeader = ({ route, navigation }: any) => {
+    const user = route.params?.params;
+    console.log('route', user)
 
     return (
-        <View style={tw`flex flex-row `}>
-
+        <SafeAreaView style={tw`flex items-center bg-gray-50 border-b border-gray-200 -pb-5 `}>
+            <TouchableOpacity style={tw`absolute left-1 top-14`} onPress={() => navigation.goBack()}>
+                <ChevronLeft size={40} />
+            </TouchableOpacity>
+            <Image source={{ uri: user?.profile_image }} style={tw`w-10 h-10 rounded-full flex `} />
             <View>
-                <Text>{user?.full_name}</Text>
+                <Text style={tw`text-lg `}>{user?.fullname}</Text>
             </View>
-        </View>
+
+        </SafeAreaView>
     )
 }
 

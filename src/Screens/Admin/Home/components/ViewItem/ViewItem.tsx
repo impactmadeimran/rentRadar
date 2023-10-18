@@ -1,6 +1,6 @@
-import { View, Text, TouchableOpacity, Image, FlatList, Dimensions, ScrollView, KeyboardAvoidingView, TouchableWithoutFeedback, Keyboard, Alert } from 'react-native'
+import { View, Text, TouchableOpacity, Image, FlatList, Dimensions, ScrollView, KeyboardAvoidingView, TouchableWithoutFeedback, Keyboard, Alert, Platform } from 'react-native'
 import React, { useCallback, useRef, useState } from 'react'
-import { HeartIcon, MapPin, MoveLeft, PenLine } from 'lucide-react-native';
+import { HeartIcon, MapPin, MoveLeft, PenLine, Phone } from 'lucide-react-native';
 import tw from 'twrnc'
 import api, { CediFormat } from '../../../../../../utils';
 import { useMutation, useQuery } from '@tanstack/react-query';
@@ -9,6 +9,7 @@ import Loader from '../../../../../../src/components/Loader/Loader';
 import { useUserContext } from '../../../../../../src/context/UserContext';
 import { BottomSheetModal, BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 import { TextInput } from 'react-native-gesture-handler';
+import { Linking } from 'react-native'
 
 const ViewItem = ({ route, navigation }: any) => {
     const { token } = useUserContext()
@@ -21,7 +22,7 @@ const ViewItem = ({ route, navigation }: any) => {
         return res.data
     }
 
-    const { data, refetch, isLoading } = useQuery({
+    const { data, refetch, isLoading, isFetching } = useQuery({
         queryKey: ['getRentDetails'],
         queryFn: getRentDetails
     })
@@ -66,7 +67,7 @@ const ViewItem = ({ route, navigation }: any) => {
     }
 
     const { data: reviews, refetch: fetchReviews } = useQuery({
-        queryKey: ['getReviews'],
+        queryKey: ['getReviews', data],
         queryFn: getReviews
     })
 
@@ -95,6 +96,20 @@ const ViewItem = ({ route, navigation }: any) => {
         bottomSheetRef.current?.present();
     }, []);
 
+    const call = () => {
+        let phoneNumber = '';
+        if (Platform.OS === 'android') {
+            phoneNumber = `tel:${'233206812111'}`;
+        } else {
+            phoneNumber = `telprompt:${'233206812111'}`;
+        }
+
+        Linking.openURL(phoneNumber);
+        // Linking.openURL(`tel:${data?.user?.phone}`)
+    }
+
+    console.log(data)
+
 
     const enquire = (id: any) => {
         if (!token) {
@@ -111,16 +126,20 @@ const ViewItem = ({ route, navigation }: any) => {
                 },
             ]);
         } else {
-            navigation.navigate('Message', {
-                screen: 'Conversation',
+            navigation.navigate('Conversation', {
+                // screen: 'Conversation',
                 params: {
-                    user: data?.user
-                }
+                    id: data?.user?.id,
+                    fullname: data?.user?.full_name,
+                    profile_image: data?.user?.profile_image
+                },
             })
         }
     }
 
-    if (isLoading || addReviewLoad) return <Loader />
+    // console.log(data?.user)
+
+    if (isLoading || addReviewLoad || isFetching) return <Loader />
 
     return (
 
@@ -168,46 +187,50 @@ const ViewItem = ({ route, navigation }: any) => {
                             <TouchableOpacity onPress={enquire} style={tw`border border-red-500 p-2 rounded w-32`}>
                                 <Text style={tw`text-center text-red-500 text-lg font-bold`}>Enquire</Text>
                             </TouchableOpacity>
-                            <TouchableOpacity style={tw`bg-red-500 p-2 rounded w-32 `}>
-                                <Text style={tw`text-center text-white text-lg font-bold`}>Call</Text>
+                            <TouchableOpacity onPress={call} style={tw`bg-red-500 p-2 rounded w-32 `}>
+                                <View style={tw`flex flex-row items-center justify-center gap-2`}>
+                                    <Phone style={tw`h-5 w-5 text-white`} />
+                                    <Text style={tw`text-center text-white text-lg font-bold`}>Call</Text>
+                                </View>
                             </TouchableOpacity>
                         </View>
-                        <View style={tw`py-4 border-t border-gray-300 mt-4`}>
-                            <Text style={tw`text-xl tracking-wider font-semibold`}>
-                                Description
-                            </Text>
-                            <View>
-                                <Text>{data?.description}</Text>
-                            </View>
-                        </View>
-                        <View style={tw`py-4 border-t border-gray-300 my-4`}>
-                            <Text style={tw`text-xl tracking-wider font-semibold`}>
+
+                        <View style={tw`pt-4 border-t border-gray-300 my-4`}>
+                            {/* <Text style={tw`text-xl tracking-wider font-semibold`}>
                                 Information
-                            </Text>
+                            </Text> */}
                             <View>
-                                <View style={tw`flex-row items-center border-b border-gray-200 py-4`}>
+                                <View style={tw`flex-row items-center  py-2`}>
                                     <Text style={tw`text-base capitalize flex-1`}>Lease term</Text>
                                     <Text style={tw`text-base capitalize flex-1`}>{data?.lease_term}</Text>
                                 </View>
-                                <View style={tw`flex-row items-center border-b border-gray-200 py-4`}>
+                                <View style={tw`flex-row items-center  py-2`}>
                                     <Text style={tw`text-base capitalize flex-1`}>Category</Text>
                                     <Text style={tw`text-base capitalize flex-1`}>{data?.category}</Text>
                                 </View>
-                                <View style={tw`flex-row items-center border-b border-gray-200 py-4`}>
+                                <View style={tw`flex-row items-center  py-2`}>
                                     <Text style={tw`text-base capitalize flex-1`}>Lease rate</Text>
                                     <Text style={tw`text-base capitalize flex-1`}>{data?.rate}</Text>
                                 </View>
-                                <View style={tw`flex-row items-center border-b border-gray-200 py-4`}>
+                                <View style={tw`flex-row items-center  py-2`}>
                                     <Text style={tw`text-base capitalize flex-1`}>Cost</Text>
                                     <Text style={tw`text-base capitalize flex-1`}>{CediFormat.format(data?.lease_cost)}</Text>
                                 </View>
-                                <View style={tw`flex-row items-center border-b border-gray-200 py-4`}>
+                                <View style={tw`flex-row items-center  py-2`}>
                                     <Text style={tw`text-base capitalize flex-1`}>Location</Text>
                                     <Text style={tw`text-base capitalize flex-1`}>{data?.location}</Text>
                                 </View>
                             </View>
                         </View>
-                        <View style={tw`py-4 border-t border-gray-300 my-4`}>
+                        <View style={tw`py-4 border-t border-gray-300 mt-4`}>
+                            {/* <Text style={tw`text-xl tracking-wider font-semibold`}>
+                                Description
+                            </Text> */}
+                            <View>
+                                <Text>{data?.description}</Text>
+                            </View>
+                        </View>
+                        {token && <View style={tw`py-4 border-t border-gray-300 my-4`}>
                             <View style={tw`flex flex-row justify-between items-center`}>
                                 <Text style={tw`text-xl tracking-wider font-semibold mb-3`}>Feedback</Text>
                                 <TouchableOpacity onPress={handlePresentModalPress} >
@@ -230,7 +253,7 @@ const ViewItem = ({ route, navigation }: any) => {
                                     ))
                                 }
                             </View>
-                        </View>
+                        </View>}
                     </View>
                     <BottomSheetModal
                         ref={bottomSheetRef}

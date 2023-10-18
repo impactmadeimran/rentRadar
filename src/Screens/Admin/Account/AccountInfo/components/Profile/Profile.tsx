@@ -1,4 +1,4 @@
-import { Image, Text, TextInput, TouchableOpacity, View } from 'react-native'
+import { Image, Keyboard, KeyboardAvoidingView, Platform, ScrollView, Text, TextInput, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import api from '../../../../../../../utils'
 import { useMutation, useQuery } from '@tanstack/react-query'
@@ -8,7 +8,7 @@ import emptyUser from 'src/assets/noUser.png'
 import Loader from '../../../../../../../src/components/Loader/Loader'
 import { set } from 'lodash'
 
-const Profile = () => {
+const Profile = ({ navigation }: any) => {
     // const [profileImage, setProfileImage] = useState<string>('')
     const [firstName, setFirstName] = useState<string>('')
     const [lastName, setLastName] = useState<string>('')
@@ -44,7 +44,8 @@ const Profile = () => {
         onSuccess: (data) => {
             if (data) {
                 refetch()
-                console.log(data)
+                navigation.goBack()
+
             }
         }
     })
@@ -62,52 +63,56 @@ const Profile = () => {
     if (isLoading || mutateLoad || isFetching) return <Loader />
 
     return (
-        <View style={tw`p-4 bg-white flex-1`}>
-            <View style={tw`flex items-center mb-5`}>
-                <Image source={data?.profile_image === null ? emptyUser : { uri: data?.profile_image }} style={tw`w-28 h-28 rounded-full`} />
-                <TouchableOpacity>
-                    <Text style={tw`test-center text-blue-500 mt-2`}>Edit picture or avatar</Text>
-                </TouchableOpacity>
-            </View>
-            <View style={tw` flex gap-5 border-gray-200 border-t pt-3`}>
-                <View style={tw` flex-row justify-between`}>
-                    <Text style={tw`text-base flex-1`}>First Name</Text>
+        <ScrollView style={tw`p-4 bg-white flex-1`}>
+            <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+                <View>
+                    <View style={tw`flex items-center mb-5`}>
+                        <Image source={data?.profile_image === null ? emptyUser : { uri: data?.profile_image }} style={tw`w-28 h-28 rounded-full`} />
+                        <TouchableOpacity>
+                            <Text style={tw`test-center text-blue-500 mt-2`}>Edit picture or avatar</Text>
+                        </TouchableOpacity>
+                    </View>
+                    <View style={tw` flex gap-5 border-gray-200 border-t pt-3`}>
+                        <View style={tw` flex-row justify-between `}>
+                            <Text style={tw`text-base flex-1`}>Email</Text>
 
-                    <TextInput onChangeText={setFirstName} defaultValue={data?.full_name?.split(' ')[0]} style={tw`border-b border-gray-200  w-full flex-1`} />
-                </View>
-                <View style={tw` flex-row justify-between`}>
-                    <Text style={tw`text-base flex-1`}>Last Name</Text>
+                            <TextInput editable={false} onChangeText={setEmail} defaultValue={data?.email} style={tw`border-b border-gray-200  w-full flex-1`} />
 
-                    <TextInput onChangeText={setLastName} defaultValue={data?.full_name?.split(' ')[1]} style={tw`border-b border-gray-200  w-full flex-1`} />
-                </View>
-                <View style={tw` flex-row justify-between `}>
-                    <Text style={tw`text-base flex-1`}>Email</Text>
+                        </View>
+                        <View style={tw` flex-row justify-between`}>
+                            <Text style={tw`text-base flex-1`}>First Name</Text>
 
-                    <TextInput onChangeText={setEmail} defaultValue={data?.email} style={tw`border-b border-gray-200  w-full flex-1`} />
+                            <TextInput onChangeText={setFirstName} defaultValue={data?.full_name?.split(' ')[0]} style={tw`border-b border-gray-200  w-full flex-1`} />
+                        </View>
+                        <View style={tw` flex-row justify-between`}>
+                            <Text style={tw`text-base flex-1`}>Last Name</Text>
 
-                </View>
-                <View style={tw` flex-row justify-between`}>
-                    <Text style={tw`text-base flex-1`}>Business name</Text>
-                    {/* <Text>{data?.bus_name ?? "Not Specified"}</Text> */}
-                    <TextInput onChangeText={setBusinessName} defaultValue={data?.bus_name ?? "Not Specified"} style={tw`border-b border-gray-200  w-full flex-1`} />
+                            <TextInput onChangeText={setLastName} defaultValue={data?.full_name?.split(' ')[1]} style={tw`border-b border-gray-200  w-full flex-1`} />
+                        </View>
+                        <View style={tw` flex-row justify-between`}>
+                            <Text style={tw`text-base flex-1`}>Business name</Text>
+                            {/* <Text>{data?.bus_name ?? "Not Specified"}</Text> */}
+                            <TextInput onChangeText={setBusinessName} defaultValue={data?.bus_name ?? "Not Specified"} style={tw`border-b border-gray-200  w-full flex-1`} />
 
-                </View>
-                <View style={tw` flex-row justify-between`}>
-                    <Text style={tw`text-base flex-1`}>Phone Number</Text>
-                    {/* <Text>{data?.phone}</Text> */}
-                    <TextInput onChangeText={setPhoneNumber} defaultValue={data?.phone ?? "Not Specified"} style={tw`border-b border-gray-200  w-full flex-1`} />
-                </View>
-                <View style={tw` flex-row justify-between`}>
-                    <Text style={tw`text-base flex-1`}>Location</Text>
-                    {/* <Text>{data?.location}</Text> */}
-                    <TextInput onChangeText={setLocation} defaultValue={data?.location ?? "Not Specified"} style={tw`border-b border-gray-200  w-full flex-1`} />
-                </View>
+                        </View>
+                        <View style={tw` flex-row justify-between`}>
+                            <Text style={tw`text-base flex-1`}>Phone Number</Text>
+                            {/* <Text>{data?.phone}</Text> */}
+                            <TextInput onChangeText={setPhoneNumber} defaultValue={data?.phone ?? "Not Specified"} style={tw`border-b border-gray-200  w-full flex-1`} />
+                        </View>
+                        <View style={tw` flex-row justify-between`}>
+                            <Text style={tw`text-base flex-1`}>Location</Text>
+                            {/* <Text>{data?.location}</Text> */}
+                            <TextInput onChangeText={setLocation} defaultValue={data?.location ?? "Not Specified"} style={tw`border-b border-gray-200  w-full flex-1`} />
+                        </View>
 
-            </View>
-            <TouchableOpacity onPress={() => mutate()} style={tw`bg-red-500  rounded-lg mt-10`}>
-                <Text style={tw`text-white text-lg text-center font-extrabold py-2`}>Update</Text>
-            </TouchableOpacity>
-        </View>
+                    </View>
+                    <TouchableOpacity onPress={() => mutate()} style={tw`bg-red-500  rounded-lg mt-10`}>
+                        <Text style={tw`text-white text-lg text-center font-extrabold py-2`}>Update</Text>
+                    </TouchableOpacity>
+                </View>
+            </TouchableWithoutFeedback>
+        </ScrollView>
     )
 }
 
