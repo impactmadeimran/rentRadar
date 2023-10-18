@@ -19,7 +19,7 @@ const AccountStack = () => {
     return (
         <Stack.Navigator>
             <Stack.Screen name='AccountInfo' component={AccountInfo} options={{ headerTitle: 'Account', headerBackVisible: false }} />
-            <Stack.Screen name='ViewProfile' component={Profile} options={{ headerBackTitleVisible: false, headerTitle: 'Profile' }} />
+            <Stack.Screen name='ViewProfile' component={Profile} options={{ headerBackTitleVisible: false, headerTitle: 'Edit Profile' }} />
             <Stack.Screen name='KYC' component={KYC} options={{ headerBackTitleVisible: false, headerTitle: 'KYC' }} />
             <Stack.Screen name='MyPosts' component={Posts} options={{ headerBackTitleVisible: false, headerTitle: 'My Posts' }} />
             <Stack.Screen name='MyFavorites' component={Favorites} options={{ headerBackTitleVisible: false, headerTitle: 'My Favorites' }} />
