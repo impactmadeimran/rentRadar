@@ -2,8 +2,22 @@ import { View, Text, TouchableOpacity, ScrollView } from 'react-native'
 import React from 'react'
 import tw from 'twrnc'
 import { ChevronRight, PenSquareIcon, ShieldCheck, StarIcon, User2Icon } from 'lucide-react-native'
+import api from '../../../../../utils'
+import { useQuery } from '@tanstack/react-query'
 
 const AccountInfo = ({ navigation }: any) => {
+
+    const getKycStat = async () => {
+        const res = await api.get('/user/kyc/status/')
+        return res.data
+    }
+
+    const { data } = useQuery({
+        queryKey: ['kycStat'],
+        queryFn: getKycStat
+    })
+
+    console.log(data)
 
     const routes = [
         {

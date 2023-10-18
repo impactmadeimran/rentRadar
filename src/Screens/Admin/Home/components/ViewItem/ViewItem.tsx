@@ -1,6 +1,6 @@
 import { View, Text, TouchableOpacity, Image, FlatList, Dimensions, ScrollView, KeyboardAvoidingView, TouchableWithoutFeedback, Keyboard, Alert, Platform } from 'react-native'
 import React, { useCallback, useRef, useState } from 'react'
-import { HeartIcon, MapPin, MoveLeft, PenLine, Phone } from 'lucide-react-native';
+import { HeartIcon, MapPin, MessageCircleIcon, MoveLeft, PenLine, Phone } from 'lucide-react-native';
 import tw from 'twrnc'
 import api, { CediFormat } from '../../../../../../utils';
 import { useMutation, useQuery } from '@tanstack/react-query';
@@ -13,7 +13,7 @@ import { Linking } from 'react-native'
 
 const ViewItem = ({ route, navigation }: any) => {
     const { token } = useUserContext()
-    const { data: rentData } = route.params;
+    const { data: rentData, } = route.params;
     const windowWidth = Dimensions.get('window').width;
     const [review, setReview] = useState('')
 
@@ -185,7 +185,10 @@ const ViewItem = ({ route, navigation }: any) => {
                         </View>
                         <View style={tw`flex flex-row w-full justify-around mt-5`}>
                             <TouchableOpacity onPress={enquire} style={tw`border border-red-500 p-2 rounded w-32`}>
-                                <Text style={tw`text-center text-red-500 text-lg font-bold`}>Enquire</Text>
+                                <View style={tw`flex flex-row items-center justify-center gap-2`}>
+                                    <MessageCircleIcon style={tw`h-5 w-5 text-red-500`} />
+                                    <Text style={tw`text-center text-red-500 text-lg font-bold`}>Message</Text>
+                                </View>
                             </TouchableOpacity>
                             <TouchableOpacity onPress={call} style={tw`bg-red-500 p-2 rounded w-32 `}>
                                 <View style={tw`flex flex-row items-center justify-center gap-2`}>

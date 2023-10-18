@@ -8,7 +8,7 @@ import { useUserContext } from '../../../../../../src/context/UserContext'
 import _ from 'lodash'
 
 const Conversation = ({ route }: any) => {
-    const { token } = useUserContext()
+    const { token, tokenDecoded: me } = useUserContext()
     const [convoId, setConvoId] = useState('')
     const [message, setMessage] = useState('')
     const [webS, setWebS] = useState<WebSocket>()
@@ -35,9 +35,8 @@ const Conversation = ({ route }: any) => {
 
 
 
-
     useEffect(() => {
-        const ws: WebSocket = new WebSocket(`ws://206.81.18.243:5555/ws/chat/${convoId}/${user?.id}/`);
+        const ws: WebSocket = new WebSocket(`ws://206.81.18.243:5555/ws/chat/${convoId}/`);
         if (convoId) {
 
             ws.onopen = () => {
@@ -64,7 +63,8 @@ const Conversation = ({ route }: any) => {
     }, [convoId])
 
     const messageToSend = {
-        message: message
+        message: message,
+        sender: me?.user_id
     }
 
     const sendMessage = () => {
@@ -73,6 +73,7 @@ const Conversation = ({ route }: any) => {
             setMessage('')
         }
     }
+
 
 
     return (
@@ -84,9 +85,9 @@ const Conversation = ({ route }: any) => {
                     {
                         allChats?.map((chat, index) => {
                             return (
-                                <View key={index} style={tw`flex-row items-center justify-${chat.sender === token ? 'end' : 'start'} p-2`}>
-                                    <View style={tw`bg-gray-100 p-2 rounded-2xl ${chat.sender === token ? 'bg-red-500' : 'bg-gray-100'}`}>
-                                        <Text style={tw`text-gray-400`}>{chat?.text}</Text>
+                                <View key={index} style={tw`flex-row items-center justify-${chat.sender === me?.user_id ? 'end' : 'start'} p-2`}>
+                                    <View style={tw`bg-gray-100 p-2 rounded-xl ${chat.sender === me?.user_id ? 'bg-red-500 ' : 'bg-gray-200'}`}>
+                                        <Text style={tw`${chat.sender === me?.user_id ? "text-white" : "text-gray-600"} font-semibold `}>{chat?.text}</Text>
                                     </View>
                                 </View>
                             )
