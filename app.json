@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "rentRadar",
-    "slug": "rentRadar",
+    "slug": "rentradar",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -15,16 +15,23 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.impactmadeimran.rentradar"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.impactmadeimran.rentradar"
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "856bedd5-241c-4a0a-85dd-a8c96073f796"
+      }
     }
   }
 }

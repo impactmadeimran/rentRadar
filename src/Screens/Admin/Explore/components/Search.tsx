@@ -17,6 +17,7 @@ const Search = () => {
     const [maximumRate, setMaximumRate] = useState('')
     const [minimumTerm, setMinimumTerm] = useState('')
     const [maximumTerm, setMaximumTerm] = useState('')
+    const [category, setCategory] = useState('')
     const debMinRate = useDebounce(minimumRate, 1500)
     const debMaxRate = useDebounce(maximumRate, 1500)
     const debMinTerm = useDebounce(minimumTerm, 1500)
@@ -28,14 +29,15 @@ const Search = () => {
                 min_rate: debMinRate,
                 max_rate: debMaxRate,
                 min_term: debMinTerm,
-                max_term: debMaxTerm
+                max_term: debMaxTerm,
+                category: category
             }
         })
         return (await res).data
     }
 
     const { data, isLoading, refetch, isFetching } = useQuery({
-        queryKey: ['searchRent', debSearch, debMinRate, debMaxRate, debMinTerm, debMaxTerm],
+        queryKey: ['searchRent', debSearch, debMinRate, debMaxRate, debMinTerm, debMaxTerm, category],
         queryFn: getAll
     })
     const bottomSheetRef = useRef<BottomSheetModal>(null);
@@ -43,6 +45,17 @@ const Search = () => {
     const handlePresentModalPress = useCallback(() => {
         bottomSheetRef.current?.present();
     }, []);
+
+    const catChoices = [
+        { "value": "real-estate", "label": "Real Estate" },
+        { "value": "vehicles", "label": "Vehicles" },
+        { "value": "event-supplies", "label": "Event Supplies" },
+        { "value": "fashion", "label": "Fashion" },
+        { "value": "recreational", "label": "Recreational" },
+        { "value": "sports", "label": "Sports" },
+        { "value": "electronics", "label": "Electronics" }
+    ]
+
 
     if (isLoading || isFetching) return <Loader />
 
@@ -59,13 +72,18 @@ const Search = () => {
                         <SlidersHorizontal style={tw`w-full`} size={24} color='black' />
                     </TouchableOpacity>
                 </View>
-                {/* <View style={tw`bg-white`}> */}
 
-                {/* </View> */}
                 <View>
                     <View style={tw`flex flex-row justify-end mt-3`}>
                         <Text style={tw`text-gray-500`}>{data?.length} item(s) found</Text>
                     </View>
+                    <FlatList style={tw`flex`} data={catChoices} horizontal showsHorizontalScrollIndicator={false} renderItem={({ item }) => (
+                        <TouchableOpacity onPress={() => setCategory(item?.value)}>
+                            <View style={tw`flex ${category === item?.value ? "bg-red-400 " : "bg-gray-100"} mr-2 p-2 rounded-xl`}>
+                                <Text style={tw`${category === item?.value ? "text-white " : "text-gray-600"} font-semibold`} >{item?.label}</Text>
+                            </View>
+                        </TouchableOpacity>
+                    )} keyExtractor={item => item?.value} />
                     <FlatList style={tw`mt-5 h-full`} data={data} showsVerticalScrollIndicator={false} renderItem={({ item }) => (
 
                         <ItemCard data={item} />
@@ -78,7 +96,7 @@ const Search = () => {
                     <BottomSheetModal
                         ref={bottomSheetRef}
                         index={1}
-                        snapPoints={['49%', '50%', '80%']}
+                        snapPoints={['80%', '50%', '40%']}
                         enablePanDownToClose
                         // snapPoints={snapPoints}
                         keyboardBehavior='interactive'
