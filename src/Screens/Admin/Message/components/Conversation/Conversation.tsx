@@ -1,20 +1,21 @@
 import { View, Text, TextInput, KeyboardAvoidingView, TouchableWithoutFeedback, Keyboard, Platform, TouchableOpacity, ScrollView } from 'react-native'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import api from '../../../../../../utils'
 import tw from 'twrnc'
 import { SendHorizonal } from 'lucide-react-native'
 import { useUserContext } from '../../../../../../src/context/UserContext'
 import _ from 'lodash'
+import Loader from '../../../../../../src/components/Loader/Loader'
 
 const Conversation = ({ route }: any) => {
-    const { token, tokenDecoded: me } = useUserContext()
+    const { tokenDecoded: me } = useUserContext()
     const [convoId, setConvoId] = useState('')
     const [message, setMessage] = useState('')
     const [webS, setWebS] = useState<WebSocket>()
     const [allChats, setAllChats] = useState<any[]>([])
     const user = route.params?.params;
-
+    const scrollViewRef = useRef<any>();
 
     const startConvo = async () => {
         const res = await api.post(`/chat/start/${user?.id}/`)
@@ -30,6 +31,19 @@ const Conversation = ({ route }: any) => {
         onError: (err) => console.log(err)
     })
 
+    const getConvo = async () => {
+        const res = await api.get(`/chat/${convoId}/`)
+        return res.data
+    }
+
+    const { data: convoData, isLoading } = useQuery({
+        queryKey: ['getConvo', convoId, data],
+        queryFn: getConvo,
+        onSuccess: (data) => {
+            setAllChats(data?.message_set)
+        },
+        onError: (err) => console.log(err)
+    })
 
 
 
@@ -74,14 +88,18 @@ const Conversation = ({ route }: any) => {
         }
     }
 
+    console.log(convoData)
+
+
+    if (isLoading) return <Loader />
 
 
     return (
-        <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} keyboardVerticalOffset={Platform.OS === 'ios' ? 70 : 0} style={tw`flex flex-1  h-full`}>
+        <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} keyboardVerticalOffset={Platform.OS === 'ios' ? 90 : 0} style={tw`flex flex-1  h-full`}>
             <View>
             </View>
             <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-                <ScrollView style={tw`flex-1 bg-white `}>
+                <ScrollView ref={scrollViewRef} style={tw`flex-1 bg-white `} onContentSizeChange={() => scrollViewRef.current?.scrollToEnd({ animated: true })}>
                     {
                         allChats?.map((chat, index) => {
                             return (
@@ -97,9 +115,9 @@ const Conversation = ({ route }: any) => {
             </TouchableWithoutFeedback>
             <View style={tw` flex p-2 bg-white flex-row items-center gap-2 pb-10`}>
                 <TextInput value={message} onChangeText={setMessage} multiline placeholder='Enter a message' style={tw`p-3 border border-gray-300 rounded-2xl flex-1`} />
-                <TouchableOpacity onPress={sendMessage} >
+                {message.trim()?.length >= 1 && <TouchableOpacity onPress={sendMessage} >
                     <SendHorizonal style={tw`h-6 w-6 text-red-500`} />
-                </TouchableOpacity>
+                </TouchableOpacity>}
             </View>
         </KeyboardAvoidingView>
     )

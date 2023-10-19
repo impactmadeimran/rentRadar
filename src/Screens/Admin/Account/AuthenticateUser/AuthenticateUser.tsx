@@ -7,10 +7,9 @@ const AuthenticateUser = ({ navigation }: any) => {
     return (
         <SafeAreaView style={tw`p-4 flex flex-1 items-center justify-center`}>
             <View style={tw``}>
-                <Text>You have to login before you can access your profile.</Text>
-                <TouchableOpacity onPress={() => navigation.navigate('Auth')}>
-
-                    <Text>Click  <Text style={tw`text-blue-600`}>here</Text>  to login.</Text>
+                <Text style={tw`text-lg text-center`}>You have to sign in before you can access your profile.</Text>
+                <TouchableOpacity style={tw`bg-red-500  rounded-lg mt-10`} onPress={() => navigation.navigate('Auth')}>
+                    <Text style={tw`text-white text-lg text-center font-extrabold py-2`}>Sign in</Text>
                 </TouchableOpacity>
             </View>
         </SafeAreaView>

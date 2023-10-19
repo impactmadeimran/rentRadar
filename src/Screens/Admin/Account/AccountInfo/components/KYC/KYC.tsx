@@ -4,7 +4,7 @@ import ImageUploader from '../../../../../../components/ImageUploader/ImageUploa
 import tw from 'twrnc'
 import api from '../../../../../../../utils'
 import _ from 'lodash'
-import { useMutation } from '@tanstack/react-query'
+import { useMutation, useQuery } from '@tanstack/react-query'
 import Loader from '../../../../../../components/Loader/Loader'
 
 const KYC = ({ navigation }: any) => {
@@ -36,7 +36,26 @@ const KYC = ({ navigation }: any) => {
         }
     }))
 
+    const getKycStat = async () => {
+        const res = await api.get('/user/kyc/status/')
+        return res.data
+    }
+
+    const { data } = useQuery({
+        queryKey: ['kycStat'],
+        queryFn: getKycStat
+    })
+
+    console.log(data)
+
     if (isLoading) return <Loader />
+
+    if (!_.isEmpty(data?.id_front_image) && !_.isEmpty(data?.id_back_image) && !_.isEmpty(data?.selfie_image) && !data?.verified) return <View>
+        <Text style={tw`text-center font-semibold text-3xl mt-5 text-yellow-500`}>KYC Pending</Text>
+    </View>
+    if (!_.isEmpty(data?.id_front_image) && !_.isEmpty(data?.id_back_image) && !_.isEmpty(data?.selfie_image) && data?.verified) return <View>
+        <Text style={tw`text-center font-semibold text-3xl mt-5 text-green-500`}>KYC Verified</Text>
+    </View>
 
     return (
         <View style={tw`p-4`}>
