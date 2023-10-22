@@ -77,7 +77,7 @@ const Conversation = ({ route }: any) => {
     }, [convoId])
 
     const messageToSend = {
-        message: message,
+        message: message?.trim(),
         sender: me?.user_id
     }
 

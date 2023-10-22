@@ -1,10 +1,12 @@
-import { View, Text, TouchableOpacity, ScrollView } from 'react-native'
+import { View, Text, TouchableOpacity, ScrollView, Alert } from 'react-native'
 import React from 'react'
 import tw from 'twrnc'
 import { ChevronRight, PenSquareIcon, ShieldCheck, StarIcon, User2Icon } from 'lucide-react-native'
+import { useUserContext } from '../../../../../src/context/UserContext'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 const AccountInfo = ({ navigation }: any) => {
-
+    const { clearUser, tokenDecoded } = useUserContext()
 
 
     const routes = [
@@ -30,6 +32,16 @@ const AccountInfo = ({ navigation }: any) => {
         },
     ]
 
+    const signOut = async () => {
+        navigation.navigate('Home')
+        await AsyncStorage.removeItem('user');
+        await AsyncStorage.removeItem('userData');
+        await AsyncStorage.removeItem('userToken');
+        Alert.alert('Logout successful')
+    }
+
+    console.log('td', tokenDecoded)
+
     return (
         <ScrollView style={tw`flex-1 bg-gray-50`} keyboardDismissMode='on-drag' keyboardShouldPersistTaps='handled' accessible={false}>
 
@@ -47,7 +59,7 @@ const AccountInfo = ({ navigation }: any) => {
                         ))
                     }
                 </View>
-                <TouchableOpacity style={tw`bg-red-500  rounded-lg mt-10`}>
+                <TouchableOpacity onPress={signOut} style={tw`bg-red-500  rounded-lg mt-10`}>
                     <Text style={tw`text-white text-lg text-center font-extrabold py-3`}>Logout</Text>
                 </TouchableOpacity>
             </View>

@@ -31,6 +31,9 @@ const Login = ({ navigation }: any) => {
                     Alert.alert('Error')
                 }
             }
+        },
+        onError: () => {
+            Alert.alert('Incorrect password')
         }
     })
 

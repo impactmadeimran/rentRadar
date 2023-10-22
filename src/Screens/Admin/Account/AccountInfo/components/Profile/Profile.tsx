@@ -1,4 +1,4 @@
-import { Image, Keyboard, KeyboardAvoidingView, Platform, ScrollView, Text, TextInput, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native'
+import { Alert, Image, Keyboard, KeyboardAvoidingView, Platform, ScrollView, Text, TextInput, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import api from '../../../../../../../utils'
 import { useMutation, useQuery } from '@tanstack/react-query'
@@ -45,6 +45,7 @@ const Profile = ({ navigation }: any) => {
             if (data) {
                 refetch()
                 navigation.goBack()
+                Alert.alert('Profile updated successfully')
 
             }
         }
@@ -71,7 +72,7 @@ const Profile = ({ navigation }: any) => {
                     <View style={tw`flex items-center mb-5`}>
                         <Image source={data?.profile_image === null ? emptyUser : { uri: data?.profile_image }} style={tw`w-28 h-28 rounded-full`} />
                         <TouchableOpacity>
-                            <Text style={tw`test-center text-blue-500 mt-2`}>Edit picture or avatar</Text>
+                            <Text style={tw`text-center text-blue-500 mt-2`}>Edit picture or avatar</Text>
                         </TouchableOpacity>
                     </View>
                     <View style={tw` flex gap-5 border-gray-200 border-t pt-3`}>

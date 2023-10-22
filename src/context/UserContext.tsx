@@ -10,6 +10,7 @@ interface userProps {
     setUserData: any;
     user: any;
     tokenDecoded: any;
+    logout: any
 }
 
 const Context = createContext<Partial<userProps>>({
@@ -34,12 +35,21 @@ const UserContext = ({ children }: any) => {
         }
     }
 
-    const getToken = async () => {
+    // const getToken = async () => {
+    //     try {
+    //         const token = await AsyncStorage.getItem('userToken');
+    //         // setToken(token)
+    //         console.log(token)
+    //         // return token
+    //     } catch (e) {
+    //         console.log(e)
+    //     }
+    // }
+
+    const logout = async () => {
         try {
-            const token = await AsyncStorage.getItem('userToken');
-            // setToken(token)
-            console.log(token)
-            // return token
+            await AsyncStorage.removeItem('userToken');
+            setIsAuthenticated(false)
         } catch (e) {
             console.log(e)
         }
@@ -87,7 +97,8 @@ const UserContext = ({ children }: any) => {
                 isAuthenticated,
                 setUserData,
                 user,
-                tokenDecoded
+                tokenDecoded,
+                logout
             }}
         >
             {children}

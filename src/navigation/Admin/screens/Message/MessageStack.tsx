@@ -8,7 +8,7 @@ const Stack = createNativeStackNavigator()
 
 const MessageStack = () => {
     return (
-        <Stack.Navigator initialRouteName='AllMessages'>
+        <Stack.Navigator >
             <Stack.Screen name="AllMessages" component={AllMessages} options={{
                 headerTitle: 'Messages',
             }} />
