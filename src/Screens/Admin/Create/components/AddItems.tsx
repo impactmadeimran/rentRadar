@@ -18,11 +18,11 @@ const AddItem = ({ navigation }: any) => {
     const [image3, setImage3] = useState<string>('');
     const [image4, setImage4] = useState<string>('');
     const [image5, setImage5] = useState<string>('');
-    const [image6, setImage6] = useState<string>('');
-    const [image7, setImage7] = useState<string>('');
-    const [image8, setImage8] = useState<string>('');
-    const [image9, setImage9] = useState<string>('');
-    const [image10, setImage10] = useState<string>('');
+    // const [image6, setImage6] = useState<string>('');
+    // const [image7, setImage7] = useState<string>('');
+    // const [image8, setImage8] = useState<string>('');
+    // const [image9, setImage9] = useState<string>('');
+    // const [image10, setImage10] = useState<string>('');
     const [allImages, setAllImages] = useState({})
     const [categories, setCategories] = useState<string>('');
     const [location, setLocation] = useState<string>('');
@@ -70,21 +70,21 @@ const AddItem = ({ navigation }: any) => {
             if (image5 !== '') {
                 AllImages['image5'] = image5
             }
-            if (image6 !== '') {
-                AllImages['image6'] = image6
-            }
-            if (image7 !== '') {
-                AllImages['image7'] = image7
-            }
-            if (image8 !== '') {
-                AllImages['image8'] = image8
-            }
-            if (image9 !== '') {
-                AllImages['image9'] = image9
-            }
-            if (image10 !== '') {
-                AllImages['image10'] = image10
-            }
+            // if (image6 !== '') {
+            //     AllImages['image6'] = image6
+            // }
+            // if (image7 !== '') {
+            //     AllImages['image7'] = image7
+            // }
+            // if (image8 !== '') {
+            //     AllImages['image8'] = image8
+            // }
+            // if (image9 !== '') {
+            //     AllImages['image9'] = image9
+            // }
+            // if (image10 !== '') {
+            //     AllImages['image10'] = image10
+            // }
 
             const res = await api.post('/rental/create/', {
                 title,
@@ -104,8 +104,7 @@ const AddItem = ({ navigation }: any) => {
     const { mutate, isLoading } = useMutation({
         mutationKey: ['create_ad'],
         mutationFn: createAd,
-        onSuccess: (data) => {
-            console.log(data)
+        onSuccess: () => {
             navigation.navigate('Home')
             queryClient.invalidateQueries(['getAllRent'])
         }
@@ -182,11 +181,11 @@ const AddItem = ({ navigation }: any) => {
                                     <ImageUploader setImage={setImage3} image={image3} label='Image 3' />
                                     <ImageUploader setImage={setImage4} image={image4} label='Image 4' />
                                     <ImageUploader setImage={setImage5} image={image5} label='Image 5' />
-                                    <ImageUploader setImage={setImage6} image={image6} label='Image 6' />
+                                    {/* <ImageUploader setImage={setImage6} image={image6} label='Image 6' />
                                     <ImageUploader setImage={setImage7} image={image7} label='Image 7' />
                                     <ImageUploader setImage={setImage8} image={image8} label='Image 8' />
                                     <ImageUploader setImage={setImage9} image={image9} label='Image 9' />
-                                    <ImageUploader setImage={setImage10} image={image10} label='Image 10' />
+                                    <ImageUploader setImage={setImage10} image={image10} label='Image 10' /> */}
                                 </View>
                             </View>
                         </BottomSheetModal>

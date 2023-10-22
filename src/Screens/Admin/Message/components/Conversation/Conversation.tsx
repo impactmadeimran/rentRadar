@@ -88,7 +88,7 @@ const Conversation = ({ route }: any) => {
         }
     }
 
-    console.log(convoData)
+    // console.log(convoData)
 
 
     if (isLoading) return <Loader />

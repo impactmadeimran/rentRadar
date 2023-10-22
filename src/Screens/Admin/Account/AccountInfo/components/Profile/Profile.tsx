@@ -61,7 +61,6 @@ const Profile = ({ navigation }: any) => {
 
     }, [data])
 
-    console.log(data)
 
     if (isLoading || mutateLoad || isFetching) return <Loader />
 

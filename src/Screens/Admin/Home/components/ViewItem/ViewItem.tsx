@@ -108,7 +108,6 @@ const ViewItem = ({ route, navigation }: any) => {
         // Linking.openURL(`tel:${data?.user?.phone}`)
     }
 
-    console.log(data)
 
 
     const enquire = (id: any) => {
@@ -144,12 +143,12 @@ const ViewItem = ({ route, navigation }: any) => {
     return (
 
         <View style={tw`flex-1`}>
+            <TouchableOpacity onPress={() => navigation.goBack()} style={tw`absolute top-14 bg-red-700 z-50 p-2 ml-5 rounded-full`}>
+                <MoveLeft color='white' height={24} width={24} />
+            </TouchableOpacity>
             <ScrollView style={tw``}>
                 <BottomSheetModalProvider>
                     {/* <Text>ViewItem</Text> */}
-                    <TouchableOpacity onPress={() => navigation.goBack()} style={tw`absolute top-14 bg-red-700 z-50 p-2 ml-5 rounded-full`}>
-                        <MoveLeft color='white' height={24} width={24} />
-                    </TouchableOpacity>
 
                     <View style={tw` bg-gray-200`}>
                         <FlatList

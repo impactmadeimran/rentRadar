@@ -4,7 +4,7 @@ import tw from 'twrnc'
 import CustomSelect from "../../components/Select/CustomSelect"
 import SegmentedControl from '@react-native-segmented-control/segmented-control';
 import api from "../../../utils";
-import DateTimePicker from '@react-native-community/datetimepicker';
+import DateTimePicker, { DateTimePickerAndroid } from '@react-native-community/datetimepicker';
 import { BottomSheetModal, BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 import moment from "moment";
 import { useMutation } from "@tanstack/react-query";
@@ -26,6 +26,7 @@ const Register = ({ navigation }: any) => {
     const [businessName, setBusinessName] = useState('')
     const [showAndroidDate, setShowAndroidDate] = useState(false)
     const [addBusName, setAddBusName] = useState({})
+
 
     const isIOS = Platform.OS === 'ios';
     const isAndroid = Platform.OS === 'android';
@@ -71,12 +72,12 @@ const Register = ({ navigation }: any) => {
     const onDateChange = (event: any, selectedDate: any) => {
         const currentDate = selectedDate;
         setDate(currentDate);
-        console.log(moment(currentDate).format('YYYY MM d'))
+        // console.log(moment(currentDate).format('YYYY MM d'))
         // if (isAndroid) { setShowAndroidDate(false) }
     };
     const handlePresentModalPress = useCallback(() => {
         isIOS && bottomSheetRef.current?.present();
-        setShowAndroidDate(isAndroid)
+        openDatePicker()
     }, []);
 
 
@@ -87,6 +88,21 @@ const Register = ({ navigation }: any) => {
             })
         }
     }, [type])
+
+    const openDatePicker = () => {
+
+        DateTimePickerAndroid.open({ display: 'calendar', mode: 'date', value: new Date(updatedDate), onChange: onDateChange, maximumDate: new Date(updatedDate) })
+    }
+
+
+    const currentDate = new Date();
+
+    // Subtract 18 years from the current year
+    // const updatedYear = currentDate.getFullYear() - 18;
+
+
+    // Create a new Date object with the updated year
+    const updatedDate = new Date(currentDate);
 
     if (isLoading) return <Loader />
 
@@ -112,7 +128,7 @@ const Register = ({ navigation }: any) => {
                                     <TextInput onChangeText={setLastName} value={lastName} style={tw`border border-gray-200 p-2 rounded flex-1`} placeholder="Last name" />
                                 </View>
                                 {type === "Business" && <TextInput onChangeText={setBusinessName} value={businessName} style={tw`border border-gray-200 p-2 rounded`} placeholder="Business name" />}
-                                <TextInput onChangeText={setPhone} value={phone} style={tw`border border-gray-200 p-2 rounded`} placeholder="Phone Number" />
+                                <TextInput keyboardType={'numeric'} onChangeText={setPhone} value={phone} style={tw`border border-gray-200 p-2 rounded`} placeholder="Phone Number" />
                                 <TextInput onChangeText={setPassword} value={password} style={tw`border border-gray-200 p-2 rounded`} placeholder="Password" secureTextEntry={true} />
                                 <CustomSelect
                                     placeholder="Gender"
@@ -125,11 +141,6 @@ const Register = ({ navigation }: any) => {
                                     {date !== null ? <Text> {moment(date).format('LL')}</Text> : <Text style={tw`text-gray-400`}>Date of birth</Text>}
                                 </TouchableOpacity>
 
-
-
-                                {
-                                    showAndroidDate && <DateTimePicker display='default' style={tw`border border-gray-200 p-2 rounded w-full`} mode="date" onChange={onDateChange} value={new Date()} />
-                                }
 
                                 <BottomSheetModal
                                     ref={bottomSheetRef}
@@ -145,7 +156,7 @@ const Register = ({ navigation }: any) => {
                                             <Text style={tw`px-4 text-blue-500 text-lg`}>Done</Text>
                                         </TouchableOpacity>
                                     </View>
-                                    <DateTimePicker display='spinner' style={tw`border border-gray-200 p-2 rounded w-full`} mode="date" onChange={onDateChange} value={new Date()} />
+                                    <DateTimePicker maximumDate={new Date(updatedDate)} display='spinner' style={tw`border border-gray-200 p-2 rounded w-full`} mode="date" onChange={onDateChange} value={new Date(updatedDate)} />
 
                                 </BottomSheetModal>
                                 <View style={tw`flex flex-row justify-end`}>
