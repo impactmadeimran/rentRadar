@@ -18,6 +18,11 @@ const Main = () => {
     const [fontsLoaded] = useFonts({
         'GrandHotel': require('../assets/fonts/GrandHotel-Regular.ttf')
     });
+
+
+    if (!fontsLoaded) {
+        return null;
+    }
     return (
         <View style={styles.container}>
             <NavigationContainer>

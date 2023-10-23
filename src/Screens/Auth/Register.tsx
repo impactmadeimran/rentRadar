@@ -32,18 +32,23 @@ const Register = ({ navigation }: any) => {
     const isAndroid = Platform.OS === 'android';
 
     const register = async () => {
-        const res = await api.post('/auth/register/', {
-            email,
-            password,
-            first_name: firstName,
-            last_name: lastName,
-            phone,
-            user_type: type === 'Personal' ? 1 : 2,
-            gender,
-            ...addBusName,
-            dob: moment(date).format('YYYY-MM-DD')
-        })
-        return res.data
+        if (password.length > 6) {
+
+            const res = await api.post('/auth/register/', {
+                email,
+                password,
+                first_name: firstName,
+                last_name: lastName,
+                phone,
+                user_type: type === 'Personal' ? 1 : 2,
+                gender,
+                ...addBusName,
+                dob: moment(date).format('YYYY-MM-DD')
+            })
+            return res.data
+        } else {
+            Alert.alert('Password must be at least 6 characters')
+        }
     }
 
     const { mutate, isLoading } = useMutation({
