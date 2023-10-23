@@ -31,7 +31,7 @@ const AllMessages = ({ navigation }: any) => {
     const lastMessage = data?.map((item: any) => item?.last_message)
 
     const dataToMap = (initiator && receiver) && [...receiver, ...initiator];
-    console.log('lMes', lastMessage)
+    // console.log('lMes', lastMessage)
 
     const getLastMes = (id: any, index: number) => {
         const res = lastMessage?.filter((item: any) => item?.sender === id || item?.sender === tokenDecoded?.user_id)

@@ -6,7 +6,7 @@ import { useMutation, useQuery } from '@tanstack/react-query'
 import tw from 'twrnc'
 // import emptyUser from 'src/assets/noUser.png'
 import Loader from '../../../../../../../src/components/Loader/Loader'
-import { set } from 'lodash'
+import _, { set } from 'lodash'
 import ImageUploader from '../../../../../../../src/components/ImageUploader/ImageUploader'
 
 const Profile = ({ navigation }: any) => {
@@ -64,6 +64,8 @@ const Profile = ({ navigation }: any) => {
 
     }, [data])
 
+    console.log(data)
+
 
     if (isLoading || mutateLoad || isFetching) return <Loader />
 
@@ -71,7 +73,7 @@ const Profile = ({ navigation }: any) => {
         <ScrollView style={tw`p-4 bg-white flex-1`}>
             <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
                 <View>
-                    <ImageUploader image={profileImage} setImage={setProfileImage} label='' profileImage={true} folder='profile_photos' />
+                    <ImageUploader image={!_.isEmpty(profileImage) ? profileImage : data?.profile_image} setImage={setProfileImage} label='' profileImage={true} folder='profile_photos' />
                     {/* <View style={tw`flex items-center mb-5`}>
                         <Image source={data?.profile_image === null ? emptyUser : { uri: data?.profile_image }} style={tw`w-28 h-28 rounded-full`} />
                         <TouchableOpacity>
