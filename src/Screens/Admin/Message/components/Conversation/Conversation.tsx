@@ -9,7 +9,7 @@ import _ from 'lodash'
 import Loader from '../../../../../../src/components/Loader/Loader'
 
 const Conversation = ({ route }: any) => {
-    const { tokenDecoded: me } = useUserContext()
+    const { tokenDecoded: me, token } = useUserContext()
     const [convoId, setConvoId] = useState('')
     const [message, setMessage] = useState('')
     const [webS, setWebS] = useState<WebSocket>()
@@ -25,6 +25,7 @@ const Conversation = ({ route }: any) => {
     const { data } = useQuery({
         queryKey: ['startConvo'],
         queryFn: startConvo,
+        enabled: token !== undefined,
         onSuccess: (data) => {
             setConvoId(data.id)
         },
@@ -39,6 +40,7 @@ const Conversation = ({ route }: any) => {
     const { data: convoData, isLoading } = useQuery({
         queryKey: ['getConvo', convoId, data],
         queryFn: getConvo,
+        enabled: convoId !== '',
         onSuccess: (data) => {
             setAllChats(data?.message_set)
         },

@@ -1,5 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useContext, createContext, useState, Dispatch, SetStateAction, useEffect } from 'react'
+import { useContext, createContext, useState } from 'react'
 
 interface userProps {
     token: string | undefined;
@@ -60,6 +60,9 @@ const UserContext = ({ children }: any) => {
             await AsyncStorage.removeItem('user');
             await AsyncStorage.removeItem('userData');
             await AsyncStorage.removeItem('userToken');
+            setToken(undefined)
+            setTokenDecoded(null)
+            setUser(null)
             setIsAuthenticated(false)
         } catch (e) {
             console.log(e)

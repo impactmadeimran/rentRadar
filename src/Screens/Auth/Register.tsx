@@ -29,7 +29,7 @@ const Register = ({ navigation }: any) => {
 
 
     const isIOS = Platform.OS === 'ios';
-    const isAndroid = Platform.OS === 'android';
+    // const isAndroid = Platform.OS === 'android';
 
     const register = async () => {
         if (password.length > 6) {

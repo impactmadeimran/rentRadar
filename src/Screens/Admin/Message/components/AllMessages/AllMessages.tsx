@@ -8,10 +8,11 @@ import tw from 'twrnc'
 import _ from "lodash"
 import AuthenticateUser from "../../../../../../src/Screens/Admin/Account/AuthenticateUser/AuthenticateUser"
 import { useEffect } from "react"
+import moment from "moment"
 
 const AllMessages = ({ navigation }: any) => {
 
-    const { tokenDecoded } = useUserContext()
+    const { tokenDecoded, token } = useUserContext()
 
     const getAllMessages = async () => {
         const res = await api.get('/chat/')
@@ -21,6 +22,7 @@ const AllMessages = ({ navigation }: any) => {
     const { data, isLoading, refetch } = useQuery({
         queryKey: ['get_all_Messages', tokenDecoded],
         queryFn: getAllMessages,
+        enabled: token !== undefined
     })
 
     // console.log(data)
@@ -35,7 +37,8 @@ const AllMessages = ({ navigation }: any) => {
 
     const getLastMes = (id: any, index: number) => {
         const res = lastMessage?.filter((item: any) => item?.sender === id || item?.sender === tokenDecoded?.user_id)
-        return res[index]?.text
+        console.log(res[index])
+        return res[index]
     }
 
     useEffect(() => {
@@ -61,9 +64,12 @@ const AllMessages = ({ navigation }: any) => {
                         },
                     })} style={tw`flex flex-row items-center gap-2 py-2 ${index < 1 ? "" : 'border-t border-gray-200'} `}>
                         <Image source={item?.profile_image ? { uri: item?.profile_image } : noUser} style={tw`w-14 h-14 rounded-full`} />
-                        <View style={tw`flex gap-1`}>
+                        <View style={tw`flex gap-1 flex-1`}>
                             <Text style={tw`text-base`} >{item?.full_name}</Text>
-                            <Text style={tw`text-gray-500`}>{getLastMes(item?.id, index)}</Text>
+                            <View style={tw`flex flex-row justify-between`}>
+                                <Text style={tw`text-gray-500`}>{getLastMes(item?.id, index)?.text}</Text>
+                                <Text style={tw`text-gray-500 text-xs`}>{moment(getLastMes(item?.id, index)?.created_at).fromNow()}</Text>
+                            </View>
                         </View>
                     </TouchableOpacity>
                 )} keyExtractor={item => item?.id} refreshControl={<RefreshControl refreshing={isLoading} onRefresh={refetch} />} />

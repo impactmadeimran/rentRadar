@@ -6,7 +6,7 @@ import { useUserContext } from '../../../../../src/context/UserContext'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
 const AccountInfo = ({ navigation }: any) => {
-    const { clearUser, tokenDecoded } = useUserContext()
+    const { clearUser } = useUserContext()
 
 
     const routes = [
@@ -34,7 +34,7 @@ const AccountInfo = ({ navigation }: any) => {
 
     const signOut = async () => {
         try {
-            await AsyncStorage.clear()
+            clearUser()
             navigation.navigate('Home')
         } catch (e) {
             // clear error
