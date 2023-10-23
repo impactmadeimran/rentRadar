@@ -6,21 +6,25 @@ import { supabase } from '../../../src/hooks/supabase';
 import { useUserContext } from '../../../src/context/UserContext';
 import * as FileSystem from 'expo-file-system'
 import { decode } from 'base64-arraybuffer';
+import emptyUser from 'src/assets/noUser.png'
+import _ from 'lodash';
+
 
 interface Props {
     label: string;
     setImage: Dispatch<SetStateAction<any>>;
     image: string;
     folder?: string;
+    profileImage?: boolean;
 }
 
-const ImageUploader = ({ image, setImage, label, folder }: Props) => {
+const ImageUploader = ({ image, setImage, label, folder, profileImage }: Props) => {
     const { user } = useUserContext()
     const [imagePath, setImagePath] = useState<any>(null);
     const pickImage = async () => {
         // No permissions request is necessary for launching the image library
         let result = await ImagePicker.launchImageLibraryAsync({
-            mediaTypes: ImagePicker.MediaTypeOptions.All,
+            mediaTypes: ImagePicker.MediaTypeOptions.Images,
             allowsEditing: true,
             aspect: [4, 3],
             quality: 1,
@@ -68,6 +72,14 @@ const ImageUploader = ({ image, setImage, label, folder }: Props) => {
             downloadImage(imagePath)
         }
     }, [imagePath])
+
+    if (profileImage) return <View style={tw`flex items-center mb-5`}>
+        <Image source={_.isEmpty(image) ? emptyUser : { uri: image }} style={tw`w-28 h-28 rounded-full`} />
+        <TouchableOpacity onPress={pickImage}>
+            <Text style={tw`text-center text-blue-500 mt-2`}>Edit picture or avatar</Text>
+        </TouchableOpacity>
+    </View>
+
     return (
         <TouchableOpacity onPress={pickImage} style={tw`border p-3 rounded border-gray-400 flex flex-row items-center gap-2`}>
             {image && <Image source={{ uri: image ?? '' }} height={30} width={30} />}

@@ -2,11 +2,12 @@ import { Alert, Image, Keyboard, KeyboardAvoidingView, Platform, ScrollView, Tex
 import React, { useEffect, useState } from 'react'
 import api from '../../../../../../../utils'
 import { useMutation, useQuery } from '@tanstack/react-query'
-import { SafeAreaView } from 'react-native-safe-area-context'
+// import { SafeAreaView } from 'react-native-safe-area-context'
 import tw from 'twrnc'
-import emptyUser from 'src/assets/noUser.png'
+// import emptyUser from 'src/assets/noUser.png'
 import Loader from '../../../../../../../src/components/Loader/Loader'
 import { set } from 'lodash'
+import ImageUploader from '../../../../../../../src/components/ImageUploader/ImageUploader'
 
 const Profile = ({ navigation }: any) => {
     // const [profileImage, setProfileImage] = useState<string>('')
@@ -16,6 +17,7 @@ const Profile = ({ navigation }: any) => {
     const [businessName, setBusinessName] = useState<string>('')
     const [phoneNumber, setPhoneNumber] = useState<string>('')
     const [location, setLocation] = useState<string>('')
+    const [profileImage, setProfileImage] = useState<string>('')
     const fetchUser = async () => {
         const res = await api.get('/user/')
         return res.data
@@ -33,7 +35,8 @@ const Profile = ({ navigation }: any) => {
             phone: phoneNumber ?? data?.phone_numbe,
             location: location ?? data?.location,
             first_name: firstName ?? data?.full_name?.split(' ')[0],
-            last_name: lastName ?? data?.full_name?.split(' ')[1]
+            last_name: lastName ?? data?.full_name?.split(' ')[1],
+            profile_image: profileImage ?? data?.profile_image
         })
         return res.data
     }
@@ -68,12 +71,13 @@ const Profile = ({ navigation }: any) => {
         <ScrollView style={tw`p-4 bg-white flex-1`}>
             <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
                 <View>
-                    <View style={tw`flex items-center mb-5`}>
+                    <ImageUploader image={profileImage} setImage={setProfileImage} label='' profileImage={true} folder='profile_photos' />
+                    {/* <View style={tw`flex items-center mb-5`}>
                         <Image source={data?.profile_image === null ? emptyUser : { uri: data?.profile_image }} style={tw`w-28 h-28 rounded-full`} />
                         <TouchableOpacity>
                             <Text style={tw`text-center text-blue-500 mt-2`}>Edit picture or avatar</Text>
                         </TouchableOpacity>
-                    </View>
+                    </View> */}
                     <View style={tw` flex gap-5 border-gray-200 border-t pt-3`}>
                         <View style={tw` flex-row justify-between `}>
                             <Text style={tw`text-base flex-1`}>Email</Text>

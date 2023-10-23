@@ -33,14 +33,15 @@ const AccountInfo = ({ navigation }: any) => {
     ]
 
     const signOut = async () => {
-        navigation.navigate('Home')
-        await AsyncStorage.removeItem('user');
-        await AsyncStorage.removeItem('userData');
-        await AsyncStorage.removeItem('userToken');
+        try {
+            await AsyncStorage.clear()
+            navigation.navigate('Home')
+        } catch (e) {
+            // clear error
+        }
+
         Alert.alert('Logout successful')
     }
-
-    console.log('td', tokenDecoded)
 
     return (
         <ScrollView style={tw`flex-1 bg-gray-50`} keyboardDismissMode='on-drag' keyboardShouldPersistTaps='handled' accessible={false}>
