@@ -13,7 +13,7 @@ const Tab = createBottomTabNavigator();
 
 
 const Admin = () => {
-    const { token } = useUserContext()
+    const { token, tokenDecoded } = useUserContext()
     axios.interceptors.request.use(
         function (config) {
             // Do something before request is sent
@@ -27,6 +27,8 @@ const Admin = () => {
             return Promise.reject(error);
         }
     );
+
+
     return (
         <Tab.Navigator
             screenOptions={() => ({
@@ -47,11 +49,11 @@ const Admin = () => {
                     return <AntDesign name={'search1'} size={20} color={color} />;
                 }
             }} />
-            <Tab.Screen name="Create New" component={Create} options={{
+            {tokenDecoded?.user_type !== 1 && <Tab.Screen name="Create New" component={Create} options={{
                 tabBarIcon: ({ color }) => {
                     return <PlusSquareIcon name={'hearto'} size={20} color={color} />;
                 }
-            }} />
+            }} />}
             <Tab.Screen name="Message" component={Message} options={{
                 tabBarIcon: ({ color }) => {
                     return <AntDesign name={'message1'} size={20} color={color} />;

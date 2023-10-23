@@ -1,5 +1,4 @@
-import { FlatList, RefreshControl, ScrollView, Text, View } from "react-native"
-import { SafeAreaView } from "react-native-safe-area-context"
+import { FlatList, RefreshControl, View } from "react-native"
 import tw from 'twrnc'
 import { useQuery } from "@tanstack/react-query"
 import Loader from "../../../../../components/Loader/Loader"
@@ -22,20 +21,12 @@ const AllItems = () => {
 
     if (isLoading) return <Loader />
     return (
-        <SafeAreaView style={tw`px-4 `}>
-            {/* <View style={tw`flex flex-row items-center border-b border-gray-300`}>
-                <Search />
-                <Filter />
-            </View> */}
-            {/* <ScrollView>
-            <View> */}
+        <View style={tw`px-4 `}>
             <FlatList style={tw`mt-5 h-full`} data={filteredData} showsVerticalScrollIndicator={false} renderItem={({ item }) => (
 
                 <ItemCard data={item} />
             )} keyExtractor={item => item?.id} refreshControl={<RefreshControl refreshing={isLoading} onRefresh={refetch} />} />
-            {/* </View>
-        </ScrollView> */}
-        </SafeAreaView>
+        </View>
     )
 }
 

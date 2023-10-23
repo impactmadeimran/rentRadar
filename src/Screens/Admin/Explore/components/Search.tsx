@@ -47,6 +47,7 @@ const Search = () => {
     }, []);
 
     const catChoices = [
+        { "value": "", "label": "All" },
         { "value": "real-estate", "label": "Real Estate" },
         { "value": "vehicles", "label": "Vehicles" },
         { "value": "event-supplies", "label": "Event Supplies" },

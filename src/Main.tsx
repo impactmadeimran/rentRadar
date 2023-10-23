@@ -9,11 +9,15 @@ import axios from 'axios'
 import Conversation from './Screens/Admin/Message/components/Conversation/Conversation'
 import ConversationHeader from './components/ConversationHeader/ConversationHeader'
 
+import { useFonts } from 'expo-font';
+
 
 axios.defaults.baseURL = "http://206.81.18.243:5555/api/v1"
 const Stack = createNativeStackNavigator();
 const Main = () => {
-
+    const [fontsLoaded] = useFonts({
+        'GrandHotel': require('../assets/fonts/GrandHotel-Regular.ttf')
+    });
     return (
         <View style={styles.container}>
             <NavigationContainer>
