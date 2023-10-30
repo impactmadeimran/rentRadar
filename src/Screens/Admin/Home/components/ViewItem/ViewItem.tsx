@@ -1,6 +1,6 @@
 import { View, Text, TouchableOpacity, Image, FlatList, Dimensions, ScrollView, KeyboardAvoidingView, TouchableWithoutFeedback, Keyboard, Alert, Platform } from 'react-native'
 import React, { useCallback, useRef, useState } from 'react'
-import { HeartIcon, MapPin, MessageCircleIcon, MoveLeft, PenLine, Phone } from 'lucide-react-native';
+import { BadgeCheck, HeartIcon, MapPin, MessageCircleIcon, MoveLeft, PenLine, Phone } from 'lucide-react-native';
 import tw from 'twrnc'
 import api, { CediFormat } from '../../../../../../utils';
 import { useMutation, useQuery } from '@tanstack/react-query';
@@ -10,6 +10,7 @@ import { useUserContext } from '../../../../../../src/context/UserContext';
 import { BottomSheetModal, BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 import { TextInput } from 'react-native-gesture-handler';
 import { Linking } from 'react-native'
+import emptyUSer from 'src/assets/noUser.png'
 
 const ViewItem = ({ route, navigation }: any) => {
     const { token } = useUserContext()
@@ -136,7 +137,7 @@ const ViewItem = ({ route, navigation }: any) => {
         }
     }
 
-    // console.log(data?.user)
+    console.log(data)
 
     if (isLoading || addReviewLoad || isFetching) return <Loader />
 
@@ -171,17 +172,35 @@ const ViewItem = ({ route, navigation }: any) => {
                         <Text style={tw`text-xl font-semibold tracking-wider text-red-700`}>{data?.title}</Text>
                         <Text style={tw`text-xl font-semibold tracking-wider text-red-700`}>{data?.user?.bus_name}</Text>
                         <View style={tw`justify-between items-center flex-row`}>
-                            <Text style={tw`text-xl font-semibold tracking-wider text-red-700`}>{CediFormat.format(data?.lease_cost)}</Text>
+                            <Text style={tw`text-base font-semibold tracking-wider text-red-700`}>{CediFormat.format(data?.lease_cost)}</Text>
                             <TouchableOpacity onPress={() => mutate()}>
                                 {!data?.is_favorited ? <HeartIcon height={24} width={24} style={tw`text-red-500`} />
                                     : <AntDesign name={'heart'} size={20} color={'red'} />
                                 }
                             </TouchableOpacity>
                         </View>
-                        <View style={tw`mt-6 flex-row items-center gap-2`}>
+                        {/* <View style={tw`mt-6 flex-row items-center gap-2`}>
                             <MapPin height={24} width={24} style={tw`text-gray-600`} />
                             <Text style={tw`text-lg text-gray-600`}>{data?.location}</Text>
-                        </View>
+                        </View> */}
+                        <TouchableOpacity onPress={() => {
+                            navigation.navigate('ViewRenter', {
+                                // screen: 'Conversation',
+                                params: {
+                                    id: data?.user?.id,
+                                    fullname: data?.user?.full_name,
+                                    profile_image: data?.user?.profile_image,
+                                    business_name: data?.user?.bus_name
+                                },
+                            })
+                        }} style={tw`flex flex-row items-center gap-2 mt-5`}>
+                            <Image source={!data?.user?.profile_image ? emptyUSer : { uri: data?.user?.profile_image }} style={tw`w-12 h-12 rounded-full `} />
+                            <View>
+                                <Text style={tw`text-lg text-gray-600 font-bold`}>{data?.user?.full_name}</Text>
+                                {/* <Text style={tw`text-lg text-gray-600`}>{data?.user?.phone}</Text> */}
+                            </View>
+                            {data?.user?.is_kyc_verified && <BadgeCheck style={tw`h-10 w-10`} />}
+                        </TouchableOpacity>
                         <View style={tw`flex flex-row w-full justify-around mt-5`}>
                             <TouchableOpacity onPress={enquire} style={tw`border border-red-500 p-2 rounded w-32`}>
                                 <View style={tw`flex flex-row items-center justify-center gap-2`}>
